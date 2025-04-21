@@ -19,14 +19,22 @@ import { ThemeProvider } from '@mui/material/styles';
 import CourseDetails from './pages/CourseDetails';
 
 const App = () => {
-  const [loading, setLoading] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false); // Hide splash screen after 3 seconds
-    }, 1850);
+    // Check if splash has been shown before in this session
+    const splashShown = sessionStorage.getItem('splashShown');
+    
+    if (!splashShown) {
+      const timer = setTimeout(() => {
+        setShowSplash(false);
+        sessionStorage.setItem('splashShown', 'true');
+      }, 1850);
 
-    return () => clearTimeout(timer);
+      return () => clearTimeout(timer);
+    } else {
+      setShowSplash(false);
+    }
   }, []);
 
   const router = createBrowserRouter(
@@ -44,7 +52,7 @@ const App = () => {
         <Route path="/committees" element={<Committees />} />
         <Route path="/Economic-Society" element={<Placement />} />
         <Route path="/Past-Events" element={<PastEvents />} />
-        <Route path = "/faculty" element={<Faculty />}></Route>
+        <Route path="/faculty" element={<Faculty />} />
         <Route path="/msgs" element={<Messages />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/courses/course-details" element={<CourseDetails />} />
@@ -54,19 +62,15 @@ const App = () => {
 
   return (
     <>
-      {/* Render the main layout but hide it during splash screen */}
-      <div style={{ visibility: loading ? 'hidden' : 'visible', opacity: loading ? 0 : 1, transition: 'opacity 0.5s' }}>
-        <RouterProvider router={router} />
-      </div>
-
-      {/* Render the splash screen on top of everything */}
-      {loading && (
+      <RouterProvider router={router} />
+      
+      {showSplash && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 1000 }}>
-          <SplashScreen />
+          <SplashScreen onFinish={() => setShowSplash(false)} />
         </div>
       )}
     </>
   );
 };
 
-export default App;
+export default App;
