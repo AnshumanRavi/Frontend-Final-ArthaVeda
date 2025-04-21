@@ -77,4 +77,4 @@ const SplashScreen = ({ onFinish }) => {
   );
 };
 
-export default SplashScreen;
+export default SplashScreen;
