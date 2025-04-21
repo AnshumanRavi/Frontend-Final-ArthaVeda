@@ -18,24 +18,24 @@ import Committees from './pages/Committees';
 import { ThemeProvider } from '@mui/material/styles';
 import CourseDetails from './pages/CourseDetails';
 
-// const App = () => {
-//   const [showSplash, setShowSplash] = useState(true);
+const App = () => {
+  const [showSplash, setShowSplash] = useState(true);
 
-//   useEffect(() => {
-//     // Check if splash has been shown before in this session
-//     const splashShown = sessionStorage.getItem('splashShown');
+  useEffect(() => {
+    // Check if splash has been shown before using localStorage
+    const splashShown = localStorage.getItem('splashShown');
     
-//     if (!splashShown) {
-//       const timer = setTimeout(() => {
-//         setShowSplash(false);
-//         sessionStorage.setItem('splashShown', 'true');
-//       }, 1850);
+    if (!splashShown) {
+      const timer = setTimeout(() => {
+        setShowSplash(false);
+        localStorage.setItem('splashShown', 'true');
+      }, 1850);
 
-//       return () => clearTimeout(timer);
-//     } else {
-//       setShowSplash(false);
-//     }
-//   }, []);
+      return () => clearTimeout(timer);
+    } else {
+      setShowSplash(false);
+    }
+  }, []);
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -64,13 +64,13 @@ import CourseDetails from './pages/CourseDetails';
     <>
       <RouterProvider router={router} />
       
-{/*       {showSplash && (
+      {showSplash && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 1000 }}>
           <SplashScreen onFinish={() => setShowSplash(false)} />
         </div>
-      )} */}
+      )}
     </>
   );
 };
 
-export default App;
+export default App;
