@@ -21,7 +21,6 @@ const Copyright = () => {
             aria-label="Developed by [Developer Name or Team]"
             title="Developed by [Developer Name or Team]"
             target="_blank"
-            rel="noopener noreferrer"
           >
             Developed by...
           </a>
