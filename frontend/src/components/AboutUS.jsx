@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const AboutUS = () => {
   const firstDivRef = useRef(null);
@@ -82,19 +82,19 @@ const AboutUS = () => {
           <p>
             Founded in 2017, Arthaveda is the Economics Department of Motilal Nehru College
             (Evening), University of Delhi...
-            <a href="/about" style={{ color: 'neutral' }}> Read More</a>
+            <Link to="/about" style={{ color: 'neutral' }}> Read More</Link>
           </p>
           <br />
           <h2><b>Vision</b></h2>
           <p>
             Arthaveda envisions fostering an intellectually stimulating environment...
-            <a href="/about" style={{ color: 'neutral' }}> Read More</a>
+            <Link to="/about" style={{ color: 'neutral' }}> Read More</Link>
           </p>
           <br />
           <h2><b>Mission</b></h2>
           <p>
             Arthaveda is committed to promoting academic rigor, critical inquiry...
-            <a href="/about" style={{ color: 'neutral' }}> Read More</a>
+            <Link to="/about" style={{ color: 'neutral' }}> Read More</Link>
           </p>
         </div>
 
