@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Copyright = () => {
   return (
@@ -15,14 +16,14 @@ const Copyright = () => {
 
         {/* Second Cell: Developed by Link */}
         <div className="flex-1 text-sm text-center md:text-right">
-          <a
-            href="/developers"
+          <Link
+            to="/developers"
             className="hover:underline"
             aria-label="Developed by [Developer Name or Team]"
             title="Developed by [Developer Name or Team]"
           >
             Developed by...
-          </a>
+          </Link>
         </div>
       </div>
     </>
