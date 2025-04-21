@@ -20,7 +20,6 @@ const Copyright = () => {
             className="hover:underline"
             aria-label="Developed by [Developer Name or Team]"
             title="Developed by [Developer Name or Team]"
-            target="_blank"
           >
             Developed by...
           </a>
