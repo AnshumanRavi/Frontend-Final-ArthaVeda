@@ -10,7 +10,7 @@ import Notices from './pages/Notices';
 import UpcomingEvents from './pages/UpcomingEvents';
 import About from './pages/About';
 import Syllabus from './pages/Syllabus';
-// import SplashScreen from './components/SplashScreen';
+import SplashScreen from './components/SplashScreen';
 import Faculty from './pages/Faculty';
 import PastEvents from './pages/PastEvents';
 import Messages from './pages/Messages';
@@ -19,23 +19,23 @@ import { ThemeProvider } from '@mui/material/styles';
 import CourseDetails from './pages/CourseDetails';
 
 const App = () => {
-  // const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
 
-  // useEffect(() => {
-  //   // Check if splash has been shown before using localStorage
-  //   const splashShown = localStorage.getItem('splashShown');
+  useEffect(() => {
+    // Check if splash has been shown before using localStorage
+    const splashShown = localStorage.getItem('splashShown');
     
-  //   if (!splashShown) {
-  //     const timer = setTimeout(() => {
-  //       setShowSplash(false);
-  //       localStorage.setItem('splashShown', 'true');
-  //     }, 1850);
+    if (!splashShown) {
+      const timer = setTimeout(() => {
+        setShowSplash(false);
+        localStorage.setItem('splashShown', 'true');
+      }, 1850);
 
-  //     return () => clearTimeout(timer);
-  //   } else {
-  //     setShowSplash(false);
-  //   }
-  // }, []);
+      return () => clearTimeout(timer);
+    } else {
+      setShowSplash(false);
+    }
+  }, []);
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -64,13 +64,13 @@ const App = () => {
     <>
       <RouterProvider router={router} />
       
-      {/* {showSplash && (
+      {showSplash && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 1000 }}>
           <SplashScreen onFinish={() => setShowSplash(false)} />
         </div>
-      )} */}
+      )}
     </>
   );
 };
 
-export default App;
+export default App;
