@@ -59,7 +59,7 @@ const SplashScreen = ({ onFinish }) => {
         <div className="w-48 sm:w-60 md:w-72 h-2.5 sm:h-3 bg-white/30 rounded-full overflow-hidden shadow-inner">
           <div
             className="h-full bg-gradient-to-r from-white to-red-100 transition-all duration-300 ease-out"
-            style={{ width: ${progress}% }}
+            style={{ width: `${progress}%` }}
           ></div>
         </div>
 
