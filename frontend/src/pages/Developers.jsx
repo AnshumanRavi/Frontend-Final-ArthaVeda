@@ -3,7 +3,7 @@ import React from 'react';
 const Developers = () => {
   const developers = [
     {
-      name: 'Anshuman Targerian',
+      name: 'Anshuman Ravi',
       email: '1anshuman2ravi@gmail.com',
       linkedin: 'https://www.linkedin.com/in/anshuman-ravi-76051728b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
       pic: '/images/anshuman.jpg', // Path to image in public folder
