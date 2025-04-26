@@ -115,7 +115,7 @@ const Tiles = () => {
   const data = [
     { text: "FACULTY", bg: "#BA210E", image: "STUDENT.png", route: "/faculty" },
     { text: "ALUMNI", bg: "#F0CACA", image: "ALUMNI.png", route: "/alumni" },
-    { text: "COURSES", bg: "#BA210E", image: "COURSES.png", route: "/courses" },
+    { text: "COURSES", bg: "#BA210E", image: "COURSES.png", route: "/courses/course-details" },
     {
       text: "MAGAZINE",
       bg: "#F0CACA",
