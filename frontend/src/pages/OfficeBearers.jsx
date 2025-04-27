@@ -51,7 +51,7 @@ const OfficeBearers = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-900 to-gray-900 flex flex-col items-center justify-center py-10 px-4 mt-5">
+    <div className="min-h-screen bg-gradient-to-br from-red-900 to-gray-900 flex flex-col items-center justify-center py-10 px-4">
       {/* Dark red gradient background */}
       <h1 className="text-4xl md:text-5xl font-bold text-white mb-10 animate-fade-in">
         Office Bearers

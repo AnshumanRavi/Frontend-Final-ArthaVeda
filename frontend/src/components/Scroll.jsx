@@ -4,7 +4,6 @@ const Scroll = () => {
   const images = [...Array(7).keys()].map((i) => `/Scroll/${i + 1}.jpg`);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerHeight, setContainerHeight] = useState("auto");
-  const [paddingTop, setPaddingTop] = useState("50px");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
   const containerRef = useRef(null);
   const imageRef = useRef(null);
@@ -15,15 +14,13 @@ const Scroll = () => {
       if (imageRef.current) {
         const img = imageRef.current;
         const aspectRatio = img.naturalHeight / img.naturalWidth;
-        const containerWidth = containerRef.current.clientWidth;
-        const newHeight = containerWidth * aspectRatio;
+        
+        // For larger screens (>767px), we'll limit the width to 70% of viewport
+        const maxWidth = isMobile ? window.innerWidth - 64 : Math.min(window.innerWidth * 0.7, 1200);
+        const newHeight = maxWidth * aspectRatio;
 
-        // Adjust padding-top based on window width
-        const newPaddingTop = window.innerWidth <= 767 ? "0px" : "60px"; // Increased padding
-        setPaddingTop(newPaddingTop);
-
-        // Set container height (image height + padding-top)
-        setContainerHeight(`${newHeight + parseInt(newPaddingTop, 10)}px`);
+        // Set container height (image height)
+        setContainerHeight(`${newHeight}px`);
       }
     };
 
@@ -33,8 +30,8 @@ const Scroll = () => {
     }
 
     const handleResize = () => {
-      updateDimensions();
       setIsMobile(window.innerWidth <= 767);
+      updateDimensions();
     };
 
     window.addEventListener("resize", handleResize);
@@ -46,7 +43,7 @@ const Scroll = () => {
       }
       window.removeEventListener("resize", handleResize);
     };
-  }, [currentIndex]);
+  }, [currentIndex, isMobile]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -95,13 +92,14 @@ const Scroll = () => {
   };
 
   return (
-    <div className="mx-8 my-0">
+    <div className={`${isMobile ? "mx-8" : "mx-auto max-w-[1200px]"} ${isMobile ? "mt-4" : "mt-16 mb-0"} ${isMobile ? "flex items-center justify-center" : "flex items-center justify-center"}`}>
       <div
         ref={containerRef}
-        className={`relative w-full overflow-hidden bg-white ${
-          isMobile ? "rounded-2xl" : "rounded-2xl"
-        }`} // Rounded corners for wider screens
-        style={{ height: containerHeight, paddingTop }}
+        className={`relative w-full overflow-hidden bg-white rounded-2xl`}
+        style={{ 
+          height: containerHeight,
+          maxWidth: isMobile ? "100%" : "70vw"
+        }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -109,7 +107,7 @@ const Scroll = () => {
         <button
           onClick={goToPrevious}
           style={{ display: isMobile ? "none" : "block" }}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10"
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10 hover:bg-opacity-70 transition-all"
         >
           &lt;
         </button>
@@ -117,13 +115,13 @@ const Scroll = () => {
         <button
           onClick={goToNext}
           style={{ display: isMobile ? "none" : "block" }}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10"
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10 hover:bg-opacity-70 transition-all"
         >
           &gt;
         </button>
 
         <div
-          className="flex transition-transform duration-700 ease-in-out"
+          className="flex transition-transform duration-700 ease-in-out h-full"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {images.map((src, index) => (
@@ -142,8 +140,8 @@ const Scroll = () => {
             <button
               key={index}
               onClick={() => goToImage(index)}
-              className={`w-3 h-3 rounded-full ${
-                index === currentIndex ? "bg-white" : "bg-gray-500"
+              className={`w-3 h-3 rounded-full transition-all ${
+                index === currentIndex ? "bg-white scale-125" : "bg-gray-500"
               }`}
             />
           ))}

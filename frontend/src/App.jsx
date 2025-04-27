@@ -22,19 +22,12 @@ const App = () => {
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    // Check if splash has been shown before using localStorage
-    const splashShown = localStorage.getItem('splashShown');
-    
-    if (!splashShown) {
-      const timer = setTimeout(() => {
-        setShowSplash(false);
-        localStorage.setItem('splashShown', 'true');
-      }, 1850);
-
-      return () => clearTimeout(timer);
-    } else {
+    // Show splash screen for 1850ms on every load
+    const timer = setTimeout(() => {
       setShowSplash(false);
-    }
+    }, 1850);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const router = createBrowserRouter(

@@ -36,8 +36,7 @@ const Footer = () => {
   return (
     <footer className="bg-[#3a0e0a] text-white py-8 px-12 font-sans">
       <div className="flex flex-col md:flex-row justify-between flex-wrap">
-
-        {/* Contact Us Section (new styled section) */}
+        {/* Contact Us Section */}
         <div className="flex-1 p-2">
           <h3 className="text-[#e74c3c] border-b-2 border-[#e74c3c] pb-1 mb-2 text-center md:text-left">
             Contact Us
@@ -62,6 +61,14 @@ const Footer = () => {
               </a>
             </li>
           </ul>
+          {/* AKAM Image Below Contact Us */}
+          <div className="mt-4 flex justify-center md:justify-start">
+            <img
+              src="/photos/AKAM.png"
+              alt="AKAM Logo"
+              className="w-24 h-auto sm:w-28 md:w-32 object-contain"
+            />
+          </div>
         </div>
 
         {/* Quick Links */}
@@ -129,27 +136,27 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <Link  className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
+              <Link className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
                 Convocation 2023
               </Link>
             </li>
             <li>
-              <Link  className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
+              <Link className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
                 Senate Minutes
               </Link>
             </li>
             <li>
-              <Link  className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
+              <Link className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
                 SC/ST Grievance Cell
               </Link>
             </li>
             <li>
-              <Link  className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
+              <Link className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
                 Climate Action Plan
               </Link>
             </li>
             <li>
-              <Link  className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
+              <Link className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
                 Anti-Sexual Harassment Policy
               </Link>
             </li>
