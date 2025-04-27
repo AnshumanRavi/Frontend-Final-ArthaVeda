@@ -17,6 +17,22 @@ const NewSite = ({ onHeightChange }) => {
 
   const messages = [
     {
+      title: "From the Chairperson's Desk",
+      content: [
+        "With extreme pleasure and pride, I congratulate the Department of Economics, Motilal Nehru College (Eve) on the launch of the official website. This initiative represents a significant step towards academic excellence and innovation.",
+        "This website forms a dynamic platform, designed to connect the Department of Economics with international academic and professional community. It demonstrates the vision, values, and aspirations of the students and facultycube, showcasing their activities, achievements, research outcomes, and the dynamic spirit that drives toward progress.",
+        "I extend my gratitude and congratulations to the students and faculty of the department of Economics on making this initiative a reality. I wish that this website will inspire, inform, and connect and play a vital role in showcasing the students' activities.",
+        "Let this be the beginning of new opportunities."
+      ],
+      signature: {
+        regards: "Warm regards,",
+        name: "Prof. Vandana Saxena",
+        position: "Chairperson, Governing body",
+        college: "Motilal Nehru College E.",
+        university: "University of Delhi"
+      }
+    },
+    {
       title: "From the Principal's Desk",
       content: [
         "It is with great pleasure and excitement that we celebrate the launch of the official website of the Department of Economics. This new platform is a significant milestone in the rapidly evolving digital era.",
@@ -47,31 +63,15 @@ const NewSite = ({ onHeightChange }) => {
         college: "Motilal Nehru College E.",
         university: "University of Delhi"
       }
-    },
-    {
-      title: "From the Chairperson's Desk",
-      content: [
-        "With extreme pleasure and pride, I congratulate the Department of Economics, Motilal Nehru College (Eve) on the launch of the official website. This initiative represents a significant step towards academic excellence and innovation.",
-        "This website forms a dynamic platform, designed to connect the Department of Economics with international academic and professional community. It demonstrates the vision, values, and aspirations of the students and facultycube, showcasing their activities, achievements, research outcomes, and the dynamic spirit that drives toward progress.",
-        "I extend my gratitude and congratulations to the students and faculty of the department of Economics on making this initiative a reality. I wish that this website will inspire, inform, and connect and play a vital role in showcasing the students' activities.",
-        "Let this be the beginning of new opportunities."
-      ],
-      signature: {
-        regards: "Warm regards,",
-        name: "Prof. Vandana Saxena",
-        position: "Chairperson, Governing body",
-        college: "Motilal Nehru College E.",
-        university: "University of Delhi"
-      }
     }
+    
   ];
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Announcement Header */}
       <div className="text-center mb-8 pb-4 border-b border-gray-200">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Welcome to Our New Website</h2>
-        <p className="text-sm md:text-base text-gray-600">Celebrating our digital presence with messages from our leadership</p>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Welcome to Department of Economics</h2>
       </div>
 
       {/* Messages Grid */}
