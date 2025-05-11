@@ -24,6 +24,7 @@ const NewSite = ({ onHeightChange }) => {
         "I extend my gratitude and congratulations to the students and faculty of the department of Economics on making this initiative a reality. I wish that this website will inspire, inform, and connect and play a vital role in showcasing the students' activities.",
         "Let this be the beginning of new opportunities."
       ],
+      image: "/chairperson.jpg", // Path to Chairperson's image
       signature: {
         regards: "Warm regards,",
         name: "Prof. Vandana Saxena",
@@ -40,6 +41,7 @@ const NewSite = ({ onHeightChange }) => {
         "I congratulate the effort and vision that have gone into creating this website, which will surely inspire and empower all who engage with it.",
         "As we move forward, let this website serve as a beacon of advancement and an instrument for knowledge, collaboration, and innovation. I am hopeful that it will play an instrumental role in connecting us with the wider world and supporting our students and faculty in achieving new heights of success."
       ],
+      image: "/principal.jpg", // Path to Principal's image
       signature: {
         regards: "Warm regards,",
         name: "Prof. Sandeep Garg",
@@ -49,13 +51,14 @@ const NewSite = ({ onHeightChange }) => {
       }
     },
     {
-      title: "From In-Charge, Department of Economics",
+      title: "From the In-Charge",
       content: [
         "It is really a moment to cherish for all of us that the Department of Economics announces launch of the official website for the department. This endeavour undoubtedly marks a significant milestone for the department in creating its identity in the virtual world.",
         "This website is not just a digital space but a platform that reflects our vision, achievements, and aspirations and a gateway to innovation, collaboration, and knowledge sharing.",
         "Through this platform, our department can be more accessible not only to the students but also to the stakeholders and others interested to know about the department. Moreover, the department can demonstrate its achievements, enhance communications and attract attention of others towards it.",
         "The department of Economics expresses its gratitude to the Chairperson Prof. Vandana Saxena, Governing Body and the principal Prof. Sandeep Garg for extending support for the development and launch of the website."
       ],
+      image: "/tic.jpg", // Path to In-Charge's image
       signature: {
         regards: "Warm regards.",
         name: "Dr. Bishnu Charan Nag",
@@ -64,23 +67,22 @@ const NewSite = ({ onHeightChange }) => {
         university: "University of Delhi"
       }
     }
-    
   ];
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Announcement Header */}
       <div className="text-center mb-8 pb-4 border-b border-gray-200">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Welcome to Department of Economics</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Welcome to The Department of Economics</h2>
       </div>
 
       {/* Messages Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {messages.map((message, index) => (
-          <div 
+          <div
             key={index}
             className={`bg-white rounded-lg overflow-hidden shadow-sm transition-all duration-300 ${
-              expandedCard === index 
+              expandedCard === index
                 ? 'fixed top-0 left-0 right-0 bottom-0 z-50 mx-4 md:mx-10 lg:mx-20 mt-[calc(var(--navbar-height)+16px)] mb-4 bg-white p-6 overflow-y-auto shadow-xl border border-gray-200'
                 : 'cursor-pointer hover:shadow-md border border-gray-100'
             }`}
@@ -96,6 +98,13 @@ const NewSite = ({ onHeightChange }) => {
             <div className="p-4 md:p-5">
               {expandedCard === index ? (
                 <>
+                  <div className="flex justify-center mb-4">
+                    <img
+                      src={message.image}
+                      alt={message.signature.name}
+                      className="w-32 h-32 md:w-40 md:h-40 object-cover rounded-full border-2 border-[rgb(129,25,25)]"
+                    />
+                  </div>
                   {message.content.map((paragraph, i) => (
                     <p key={i} className="text-gray-800 mb-4 text-sm md:text-base leading-relaxed">{paragraph}</p>
                   ))}
@@ -106,7 +115,7 @@ const NewSite = ({ onHeightChange }) => {
                     <p>{message.signature.college}</p>
                     <p>{message.signature.university}</p>
                   </div>
-                  <button 
+                  <button
                     className="mt-6 bg-[rgb(129,25,25)] hover:bg-[rgb(100,20,20)] text-white py-2 px-4 rounded text-sm transition-colors"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -118,6 +127,13 @@ const NewSite = ({ onHeightChange }) => {
                 </>
               ) : (
                 <>
+                  <div className="flex justify-center mb-4">
+                    <img
+                      src={message.image}
+                      alt={message.signature.name}
+                      className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-full border-2 border-[rgb(129,25,25)]"
+                    />
+                  </div>
                   <p className="text-gray-700 text-sm mb-3 line-clamp-3">{message.content[0]}</p>
                   <p className="text-[rgb(129,25,25)] text-sm font-medium flex items-center">
                     <span>Read full message</span>

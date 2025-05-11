@@ -8,7 +8,6 @@ const Faculty = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('all');
 
-  // Sophisticated color palette with professional tones
   const colors = [
     'from-red-800 to-red-700',
     'from-blue-800 to-blue-700',
@@ -52,7 +51,6 @@ const Faculty = () => {
 
   const filteredFaculty = facultyMembers.filter(faculty => {
     if (activeTab === 'all') return true;
-    // Add logic for other tabs if needed (professors, visiting, etc.)
     return true;
   });
 
@@ -90,62 +88,30 @@ const Faculty = () => {
   }
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
-      {/* Hero Section with Deep Red Color */}
+    <div className="bg-white text-gray-800 font-sans min-h-screen">
+      {/* Hero Section */}
       <div 
-        className="relative py-24 text-center text-white overflow-hidden"
+        className="relative py-32 text-center text-white overflow-hidden"
         style={{ backgroundColor: 'rgb(129, 25, 25)' }}
       >
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-black/10"></div>
-        
-        {/* Decorative Elements */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-red-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-          <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-amber-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-1/4 left-1/2 w-64 h-64 bg-rose-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
-        </div>
-
+        <div 
+          className="absolute inset-0 bg-gradient-to-r from-red-900/50 to-red-800/30"
+          aria-hidden="true"
+        ></div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="inline-block mb-6">
-            <span className="text-sm font-semibold tracking-wider text-red-200 uppercase">
-              Department of Economics
-            </span>
-          </div>
-          <h1 className="text-5xl font-bold mb-6 animate-fade-in-down">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-red-100">
-              Our Distinguished Faculty
-            </span>
-          </h1>
-          <p className="text-xl font-light max-w-2xl mx-auto text-red-100 animate-fade-in-up delay-100">
-            Meet the brilliant minds shaping the future of economics education
+          <h1 className="text-5xl font-bold mb-6 animate-fade-in-down">Our Distinguished Faculty</h1>
+          <p className="text-xl font-light animate-fade-in-up delay-100">
+            Economics Department of Motilal Nehru College (Evening), University of Delhi
           </p>
-          <div className="mt-8 animate-fade-in-up delay-200">
-            <div className="inline-flex items-center">
-              <div className="w-16 h-1 bg-red-300 rounded-full"></div>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-2 text-red-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-              </svg>
-              <div className="w-16 h-1 bg-red-300 rounded-full"></div>
-            </div>
-          </div>
         </div>
-
-        {/* Curved Bottom Edge */}
-        <div className="absolute -bottom-1 left-0 right-0">
-          <svg viewBox="0 0 1440 60" className="w-full h-16 fill-current text-white">
-            <path d="M0,0V60H1440V0C1225,60,1013,60,720,60S215,60,0,0Z"></path>
-          </svg>
-        </div>
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-16 bg-white transform skew-y-2"
+          aria-hidden="true"
+        ></div>
       </div>
 
-      {/* Faculty Container */}
       <div className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Filter tabs */}
-        <div className="flex justify-center mb-12">
-          {/* Add tab filters here if needed */}
-        </div>
-
+        <div className="flex justify-center mb-12"></div>
         {filteredFaculty.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
             <div className="mx-auto h-24 w-24 text-gray-400 mb-4">
@@ -163,72 +129,33 @@ const Faculty = () => {
               return (
                 <div 
                   key={faculty._id}
-                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 group border border-gray-100"
+                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 group border border-gray-100 text-center"
                   style={{
                     animation: `fadeInUp 0.5s ease-out ${index * 0.1}s forwards`,
                     opacity: 0
                   }}
                   onClick={() => openModal(faculty)}
                 >
-                  {/* Faculty Header with Gradient */}
-                  <div className={`bg-gradient-to-r ${colorClass} p-5 text-white relative overflow-hidden`}>
-                    {/* Subtle pattern overlay */}
-                    <div className="absolute inset-0 opacity-10">
-                      <svg className="absolute inset-0 w-full h-full" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                          <pattern id="pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                            <path d="M0 40L40 0H20L0 20M40 40V20L20 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                          </pattern>
-                        </defs>
-                        <rect width="100%" height="100%" fill="url(#pattern)" />
-                      </svg>
-                    </div>
-                    
-                    <div className="relative z-10">
-                      <h2 className="text-xl font-bold">{faculty.name}</h2>
-                      <p className="text-sm opacity-90 mt-1">{faculty.designation || 'Professor'}</p>
-                    </div>
-                  </div>
-
-                  {/* Faculty Content */}
                   <div className="p-5">
-                    <div className="flex items-center mb-4">
-                      <div className="relative mr-4">
-                        <div className="w-20 h-20 rounded-full bg-gray-200 overflow-hidden border-4 border-white shadow-md group-hover:border-red-100 transition-all">
-                          <img
-                            src={faculty.imageUrl || '/default-faculty.jpg'}
-                            alt={faculty.name}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.src = '/default-faculty.jpg';
-                            }}
-                          />
-                        </div>
-                        <div className={`absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center text-white shadow-sm bg-gradient-to-r ${colorClass}`}>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        {faculty.department && (
-                          <p className="text-sm font-medium text-gray-600">{faculty.department}</p>
-                        )}
-                        {faculty.qualification && (
-                          <p className="text-xs text-gray-500 mt-1">{faculty.qualification}</p>
-                        )}
-                      </div>
+                    <div className="w-24 h-24 rounded-full bg-gray-200 overflow-hidden border-4 border-white shadow-md mx-auto group-hover:border-red-100 transition-all">
+                      <img
+                        src={faculty.imageUrl || '/default-faculty.jpg'}
+                        alt={faculty.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.src = '/default-faculty.jpg';
+                        }}
+                      />
                     </div>
-                    
-                    {/* Bio with Left Border Accent */}
-                    <div className="pl-3 border-l-2 border-gray-200">
-                      <p className="text-sm text-gray-600 line-clamp-3">
-                        {faculty.bio || 'Expert in their field with extensive teaching and research experience.'}
-                      </p>
-                    </div>
+                    <h2 className="text-xl font-bold mt-4">{faculty.name}</h2>
+                    <p className="text-sm text-gray-600 mt-1">{faculty.designation || 'Professor'}</p>
+                    {faculty.department && (
+                      <p className="text-sm font-medium text-gray-600 mt-2">Department: {faculty.department}</p>
+                    )}
+                    {faculty.qualification && (
+                      <p className="text-xs text-gray-500 mt-1">{faculty.qualification}</p>
+                    )}
                   </div>
-
-                  {/* Faculty Footer */}
                   <div className="px-5 pb-5">
                     <button 
                       className={`w-full py-2 bg-gradient-to-r ${colorClass} text-white rounded-lg hover:opacity-90 transition-all text-sm font-medium flex items-center justify-center shadow-md`}
@@ -246,7 +173,6 @@ const Faculty = () => {
         )}
       </div>
 
-      {/* Enhanced Faculty Modal */}
       {isModalOpen && selectedFaculty && (
         <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm"
@@ -256,7 +182,6 @@ const Faculty = () => {
             className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-modal-in border border-gray-200"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header with Gradient */}
             <div className={`bg-gradient-to-r ${getRandomColor(facultyMembers.findIndex(f => f._id === selectedFaculty._id))} p-5 text-white flex justify-between items-center sticky top-0 z-10`}>
               <div>
                 <h3 className="font-bold text-xl">{selectedFaculty.name}</h3>
@@ -272,14 +197,11 @@ const Faculty = () => {
                 </svg>
               </button>
             </div>
-
-            {/* Modal Content */}
             <div className="overflow-y-auto max-h-[calc(90vh-72px)]">
               <div className="p-6">
                 <div className="flex flex-col sm:flex-row gap-8 mb-8">
-                  {/* Profile Image */}
                   <div className="flex-shrink-0">
-                    <div className="w-40 h-40 rounded-xl bg-gray-200 overflow-hidden border-4 border-white shadow-lg mx-auto sm:mx-0">
+                    <div className="and w-40 h-40 rounded-xl bg-gray-200 overflow-hidden border-4 border-white shadow-lg mx-auto sm:mx-0">
                       <img
                         src={selectedFaculty.imageUrl || '/default-faculty.jpg'}
                         alt={selectedFaculty.name}
@@ -287,8 +209,6 @@ const Faculty = () => {
                       />
                     </div>
                   </div>
-                  
-                  {/* Faculty Details */}
                   <div className="flex-1">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {selectedFaculty.department && (
@@ -297,21 +217,18 @@ const Faculty = () => {
                           <p className="text-gray-800 font-medium">{selectedFaculty.department}</p>
                         </div>
                       )}
-                      
                       {selectedFaculty.email && (
                         <div className="bg-gray-50 p-3 rounded-lg">
                           <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Email</p>
                           <p className="text-gray-800 font-medium break-all">{selectedFaculty.email}</p>
                         </div>
                       )}
-                      
                       {selectedFaculty.qualification && (
                         <div className="bg-gray-50 p-3 rounded-lg">
                           <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Qualification</p>
                           <p className="text-gray-800 font-medium">{selectedFaculty.qualification}</p>
                         </div>
                       )}
-                      
                       {selectedFaculty.specialization && (
                         <div className="bg-gray-50 p-3 rounded-lg">
                           <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Specialization</p>
@@ -321,8 +238,6 @@ const Faculty = () => {
                     </div>
                   </div>
                 </div>
-                
-                {/* Full Bio */}
                 <div className="bg-gray-50 rounded-lg p-6 mb-6">
                   <h4 className="font-medium text-gray-900 mb-4 flex items-center text-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -334,8 +249,6 @@ const Faculty = () => {
                     {selectedFaculty.bio || 'No profile information available.'}
                   </div>
                 </div>
-                
-                {/* Research/Publications Section */}
                 {selectedFaculty.research && (
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h4 className="font-medium text-gray-900 mb-4 flex items-center text-lg">
@@ -355,7 +268,6 @@ const Faculty = () => {
         </div>
       )}
 
-      {/* Animation Styles */}
       <style jsx global>{`
         @keyframes fadeInUp {
           from {

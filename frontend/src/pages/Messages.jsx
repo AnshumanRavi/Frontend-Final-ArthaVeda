@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 const AboutUS = () => {
   const secondDivRef = useRef(null);
   const thirdDivRef = useRef(null);
+  const principalDivRef = useRef(null);
+  const chairmanDivRef = useRef(null);
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
@@ -23,7 +25,7 @@ const AboutUS = () => {
       { threshold: 0.2 }
     );
 
-    [secondDivRef.current, thirdDivRef.current].forEach(el => {
+    [secondDivRef.current, thirdDivRef.current, principalDivRef.current, chairmanDivRef.current].forEach(el => {
       if (el) observer.observe(el);
     });
 
@@ -45,68 +47,212 @@ const AboutUS = () => {
         flexWrap: 'wrap',
         justifyContent: 'center'
       }}>
-        {/* Profile Card */}
-        <div ref={secondDivRef} style={{
-          flex: '0 1 300px',
-          padding: '25px',
-          background: 'white',
-          borderRadius: '15px',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
-          transform: 'translateY(100px)',
-          transition: 'all 0.8s ease-out',
-          opacity: '0',
+        {/* Profile Cards Container */}
+        <div style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          minWidth: '300px',
-          height: expanded ? 'auto' : 'fit-content'
+          gap: '30px',
+          flex: '0 1 300px',
+          minWidth: '300px'
         }}>
-          <div style={{
-            width: '150px',
-            height: '150px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
+          {/* Chairperson Profile Card */}
+          <div ref={chairmanDivRef} style={{
+            padding: '25px',
+            background: 'white',
+            borderRadius: '15px',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+            transform: 'translateY(100px)',
+            transition: 'all 0.8s ease-out',
+            opacity: '0',
             display: 'flex',
-            justifyContent: 'center',
+            flexDirection: 'column',
             alignItems: 'center',
-            marginBottom: '20px',
-            overflow: 'hidden',
-            border: '5px solid white',
-            boxShadow: '0 5px 15px rgba(0,0,0,0.1)'
+            minWidth: '300px',
+            height: expanded ? 'auto' : 'fit-content'
           }}>
-            <img 
-              src="/tic.jpg" 
-              alt="Dr. Bishnu Charan Nag" 
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          </div>
-          <h3 style={{ 
-            color: '#333', 
-            margin: '10px 0 5px',
-            fontWeight: '600',
-            fontSize: '1.3rem'
-          }}>Dr. Bishnu Charan Nag</h3>
-          <p style={{ 
-            color: '#6a11cb',
-            fontWeight: '500',
-            marginBottom: '20px'
-          }}>Teacher in Charge</p>
-          
-          <div style={{
-            width: '100%',
-            padding: '15px',
-            background: '#f8f9fa',
-            borderRadius: '10px',
-            marginTop: 'auto'
+            <div style={{
+  width: '150px',
+  height: '150px',
+  borderRadius: '50%',
+  background: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom: '20px',
+  overflow: 'hidden',
+  border: '5px solid white',
+  boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
+  marginLeft: 'auto',
+  marginRight: 'auto'
+}}>
+  <img 
+    src="/chairperson.jpg" 
+    alt="Professor Vandena Saxena" 
+    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+  />
+</div>
+<h3 style={{ 
+  color: '#333', 
+  margin: '10px 0 5px',
+  fontWeight: '600',
+  fontSize: '1.3rem',
+  textAlign: 'center', // Added this line to center the text
+  width: '100%' // Ensures the h3 takes full width
+}}>
+  Professor Vandena Saxena
+</h3>
+<p style={{ 
+  color: '#2575fc',
+  fontWeight: '500',
+  marginBottom: '20px',
+  textAlign: 'center' // Also center the title
+}}>
+  Chairperson
+</p>
+
+<div style={{
+  width: '100%',
+  padding: '15px',
+  background: '#f8f9fa',
+  borderRadius: '10px',
+  marginTop: 'auto'
+}}>
+  <p style={{ 
+    color: '#555', 
+    fontStyle: 'italic',
+    textAlign: 'center',
+    margin: 0
+  }}>
+    "Inspiring curiosity and collaboration drives our success."
+  </p>
+</div>
+</div>
+          {/* Principal Profile Card */}
+          <div ref={principalDivRef} style={{
+            padding: '25px',
+            background: 'white',
+            borderRadius: '15px',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+            transform: 'translateY(100px)',
+            transition: 'all 0.8s ease-out',
+            opacity: '0',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            minWidth: '300px',
+            height: expanded ? 'auto' : 'fit-content'
           }}>
-            <p style={{ 
-              color: '#555', 
-              fontStyle: 'italic',
-              textAlign: 'center',
-              margin: 0
+            <div style={{
+              width: '150px',
+              height: '150px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: '20px',
+              overflow: 'hidden',
+              border: '5px solid white',
+              boxShadow: '0 5px 15px rgba(0,0,0,0.1)'
             }}>
-              "Education is the most powerful weapon which you can use to change the world."
-            </p>
+              <img 
+                src="/principal.jpg" 
+                alt="Principal" 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
+            <h3 style={{ 
+              color: '#333', 
+              margin: '10px 0 5px',
+              fontWeight: '600',
+              fontSize: '1.3rem'
+            }}>Prof. Sandeep Garg</h3>
+            <p style={{ 
+              color: '#11998e',
+              fontWeight: '500',
+              marginBottom: '20px'
+            }}>Principal</p>
+            
+            <div style={{
+              width: '100%',
+              padding: '15px',
+              background: '#f8f9fa',
+              borderRadius: '10px',
+              marginTop: 'auto'
+            }}>
+              <p style={{ 
+                color: '#555', 
+                fontStyle: 'italic',
+                textAlign: 'center',
+                margin: 0
+              }}>
+                "Empowering students to lead and innovate is our mission."
+              </p>
+            </div>
+          </div>
+
+          {/* Teacher-in-Charge Profile Card */}
+          <div ref={secondDivRef} style={{
+            padding: '25px',
+            background: 'white',
+            borderRadius: '15px',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+            transform: 'translateY(100px)',
+            transition: 'all 0.8s ease-out',
+            opacity: '0',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            minWidth: '300px',
+            height: expanded ? 'auto' : 'fit-content'
+          }}>
+            <div style={{
+              width: '150px',
+              height: '150px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: '20px',
+              overflow: 'hidden',
+              border: '5px solid white',
+              boxShadow: '0 5px 15px rgba(0,0,0,0.1)'
+            }}>
+              <img 
+                src="/tic.jpg" 
+                alt="Dr. Bishnu Charan Nag" 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
+            <h3 style={{ 
+              color: '#333', 
+              margin: '10px 0 5px',
+              fontWeight: '600',
+              fontSize: '1.3rem'
+            }}>Dr. Bishnu Charan Nag</h3>
+            <p style={{ 
+              color: '#6a11cb',
+              fontWeight: '500',
+              marginBottom: '20px'
+            }}>Teacher in Charge</p>
+            
+            <div style={{
+              width: '100%',
+              padding: '15px',
+              background: '#f8f9fa',
+              borderRadius: '10px',
+              marginTop: 'auto'
+            }}>
+              <p style={{ 
+                color: '#555', 
+                fontStyle: 'italic',
+                textAlign: 'center',
+                margin: 0
+              }}>
+                "Education is the most powerful weapon which you can use to change the world."
+              </p>
+            </div>
           </div>
         </div>
 
@@ -142,50 +288,7 @@ const AboutUS = () => {
             flexDirection: 'column',
             gap: '20px'
           }}>
-            {/* Teacher-in-Charge Message */}
-            <div style={{
-              padding: '20px',
-              background: '#f8f9fa',
-              borderRadius: '10px',
-              borderLeft: '4px solid #6a11cb'
-            }}>
-              <h3 style={{ 
-                color: '#11998e', 
-                marginTop: 0,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px'
-              }}>
-                <span style={{
-                  display: 'inline-block',
-                  width: '10px',
-                  height: '10px',
-                  borderRadius: '50%',
-                  background: '#6a11cb'
-                }}></span>
-                From the Teacher-in-Charge
-              </h3>
-              <p style={{ color: '#555', lineHeight: '1.6' }}>
-                {expanded ? (
-                  <>
-                    It gives me great joy to see how far the Department of Economics has come. As the Teacher-in-Charge, I've had the chance to witness firsthand the hard work, initiative, and spark our students bring to everything they do.<br /><br />
-                    Arthaveda has truly become the heartbeat of our department. The level of planning, coordination, and passion students have shown—whether it's hosting events, building connections, or recently launching Econiqa, our department's official magazine—makes me genuinely proud.<br /><br />
-                    What stands out most is the sense of ownership our students take. They don't just participate; they build, lead, and leave something behind for the next batch to grow upon.<br /><br />
-                    It has been my dream for the past five years to see something like this take shape—and I'm incredibly happy to see it finally happening. With the launch of the official website as well, Arthaveda is stepping into a new era of outreach, collaboration, and visibility.<br /><br />
-                    I hope this spirit continues to thrive. May Arthaveda keep evolving, exploring new ideas and themes that inspire not just our department, but the wider academic community.
-                  </>
-                ) : (
-                  "It gives me great joy to see how far the Department of Economics has come. Arthaveda has truly become the heartbeat of our department..."
-                )}
-              </p>
-              <p style={{ 
-                fontWeight: 'bold', 
-                color: '#333',
-                marginBottom: 0
-              }}>
-                — Dr. Bishnu Charan Nag
-              </p>
-            </div>
+            
             
             {/* Chairman's Message */}
             <div style={{
@@ -270,7 +373,51 @@ const AboutUS = () => {
                 color: '#333',
                 marginBottom: 0
               }}>
-                — Principal, Motilal Nehru College (Evening)
+                — Professor Sandeep Garg
+              </p>
+            </div>
+            {/* Teacher-in-Charge Message */}
+            <div style={{
+              padding: '20px',
+              background: '#f8f9fa',
+              borderRadius: '10px',
+              borderLeft: '4px solid #6a11cb'
+            }}>
+              <h3 style={{ 
+                color: '#11998e', 
+                marginTop: 0,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px'
+              }}>
+                <span style={{
+                  display: 'inline-block',
+                  width: '10px',
+                  height: '10px',
+                  borderRadius: '50%',
+                  background: '#6a11cb'
+                }}></span>
+                From the Teacher-in-Charge
+              </h3>
+              <p style={{ color: '#555', lineHeight: '1.6' }}>
+                {expanded ? (
+                  <>
+                    It gives me great joy to see how far the Department of Economics has come. As the Teacher-in-Charge, I've had the chance to witness firsthand the hard work, initiative, and spark our students bring to everything they do.<br /><br />
+                    Arthaveda has truly become the heartbeat of our department. The level of planning, coordination, and passion students have shown—whether it's hosting events, building connections, or recently launching Econiqa, our department's official magazine—makes me genuinely proud.<br /><br />
+                    What stands out most is the sense of ownership our students take. They don't just participate; they build, lead, and leave something behind for the next batch to grow upon.<br /><br />
+                    It has been my dream for the past five years to see something like this take shape—and I'm incredibly happy to see it finally happening. With the launch of the official website as well, Arthaveda is stepping into a new era of outreach, collaboration, and visibility.<br /><br />
+                    I hope this spirit continues to thrive. May Arthaveda keep evolving, exploring new ideas and themes that inspire not just our department, but the wider academic community.
+                  </>
+                ) : (
+                  "It gives me great joy to see how far the Department of Economics has come. Arthaveda has truly become the heartbeat of our department..."
+                )}
+              </p>
+              <p style={{ 
+                fontWeight: 'bold', 
+                color: '#333',
+                marginBottom: 0
+              }}>
+                — Dr. Bishnu Charan Nag
               </p>
             </div>
             

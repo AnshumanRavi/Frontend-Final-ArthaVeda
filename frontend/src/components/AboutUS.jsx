@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 const AboutUS = () => {
@@ -6,6 +6,29 @@ const AboutUS = () => {
   const secondDivRef = useRef(null);
   const thirdDivRef = useRef(null);
   const navigate = useNavigate();
+  const [currentProfile, setCurrentProfile] = useState(0);
+  const [isFading, setIsFading] = useState(false);
+
+  const profiles = [
+    {
+      name: 'Dr. Bishnu Charan Nag',
+      title: 'Teacher in Charge',
+      image: '/tic.jpg',
+      email: 'arthveda@mlne.du.ac.in'
+    },
+    {
+      name: 'Professor Vandana Saxena',
+      title: 'Chairperson',
+      image: '/chairperson.jpg',
+      email: 'arthveda@mlne.du.ac.in'
+    },
+    {
+      name: 'Prof. Sandeep Garg',
+      title: 'Principal',
+      image: '/principal.jpg',
+      email: 'arthveda@mlne.du.ac.in'
+    }
+  ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -33,10 +56,20 @@ const AboutUS = () => {
       if (el) observer.observe(el);
     });
 
+    // Profile transition interval with fade effect
+    const interval = setInterval(() => {
+      setIsFading(true);
+      setTimeout(() => {
+        setCurrentProfile((prev) => (prev + 1) % profiles.length);
+        setIsFading(false);
+      }, 150); // Fade-out duration
+    }, 4000); // Profile cycling interval
+
     return () => {
       elements.forEach((el) => {
         if (el) observer.unobserve(el);
       });
+      clearInterval(interval);
     };
   }, []);
 
@@ -98,7 +131,7 @@ const AboutUS = () => {
           </p>
         </div>
 
-        {/* Second Cell - Profile Card */}
+        {/* Second Cell - Profile Card Carousel */}
         <div
           ref={secondDivRef}
           style={{
@@ -110,7 +143,7 @@ const AboutUS = () => {
             flexDirection: 'column',
             alignItems: 'center',
             minWidth: '250px',
-            overflow: 'auto',
+            overflow: 'hidden',
             border: '1px solid #e0e0e0',
             boxShadow: '0 4px 8px rgba(0, 0, 0)',
             transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
@@ -119,14 +152,78 @@ const AboutUS = () => {
           }}
           className="profile-card"
         >
-          <img
-            src="/tic.jpg"
-            alt="Dr. Bishnu Charan Nag"
-            style={{ width: '150px', height: '150px', borderRadius: '50%', marginBottom: '15px', border: '3px solid #fff', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}
-          />
-          <h3 style={{ fontWeight: 'bold', margin: '5px 0', fontSize: '1.5rem', color: '#333' }}>Dr. Bishnu Charan Nag</h3>
-          <p style={{ margin: '5px 0', fontSize: '1rem', color: '#555' }}>Teacher in Charge</p>
-          <p style={{ margin: '5px 0', color: 'blue', fontSize: '0.9rem' }}>arthveda@mlne.du.ac.in</p>
+          <div
+            style={{
+              width: '150px',
+              height: '150px',
+              borderRadius: '50%',
+              overflow: 'hidden',
+              marginBottom: '15px',
+              border: '3px solid #fff',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+              opacity: isFading ? 0 : 1,
+              transform: isFading ? 'scale(0.95)' : 'scale(1)',
+              transition: 'opacity 0.15s ease-in-out, transform 0.15s ease-in-out',
+            }}
+          >
+            <img
+              src={profiles[currentProfile].image}
+              alt={profiles[currentProfile].name}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+              }}
+            />
+          </div>
+          <h3
+            style={{
+              fontWeight: 'bold',
+              margin: '5px 0',
+              fontSize: '1.5rem',
+              color: '#333',
+              textAlign: 'center',
+              width: '100%',
+              opacity: isFading ? 0 : 1,
+              transform: isFading ? 'scale(0.95)' : 'scale(1)',
+              transition: 'opacity 0.15s ease-in-out, transform 0.15s ease-in-out',
+            }}
+          >
+            {profiles[currentProfile].name}
+          </h3>
+          <p
+            style={{
+              margin: '5px 0',
+              fontSize: '1rem',
+              color: '#555',
+              textAlign: 'center',
+              width: '100%',
+              opacity: isFading ? 0 : 1,
+              transform: isFading ? 'scale(0.95)' : 'scale(1)',
+              transition: 'opacity 0.15s ease-in-out, transform 0.15s ease-in-out',
+            }}
+          >
+            {profiles[currentProfile].title}
+          </p>
+          <a
+            href={`mailto:${profiles[currentProfile].email}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              margin: '5px 0',
+              color: 'blue',
+              fontSize: '0.9rem',
+              textAlign: 'center',
+              width: '100%',
+              opacity: isFading ? 0 : 1,
+              transform: isFading ? 'scale(0.95)' : 'scale(1)',
+              transition: 'opacity 0.15s ease-in-out, transform 0.15s ease-in-out',
+              textDecoration: 'none',
+            }}
+          >
+            {profiles[currentProfile].email}
+          </a>
         </div>
 
         {/* Third Cell - Messages */}

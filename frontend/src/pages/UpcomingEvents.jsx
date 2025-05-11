@@ -1,24 +1,96 @@
 import React, { useEffect, useState } from "react";
 
+// Define modern styles
+const styles = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  /* Main container */
+  .events-board {
+    font-family: 'Inter', sans-serif;
+    background-color: #fefce8; /* Soft ivory */
+    min-height: 100vh;
+  }
+
+  /* Header section */
+  .header-section {
+    background: linear-gradient(135deg, rgb(129, 25, 25) 0%, rgb(153, 27, 27) 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 1rem;
+    z-index: 1;
+  }
+
+  /* Card styles */
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    border: 1px solid #a5b4fc; /* Subtle indigo border */
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
+  .card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    animation: none; /* Stop blinking on hover */
+  }
+
+  /* Blinking animations for indigo border */
+  @keyframes blink-indigo {
+    0%, 100% { border-left-color: #4f46e5; } /* Deep indigo */
+    50% { border-left-color: #a5b4fc; } /* Soft indigo */
+  }
+
+  .blink-indigo-even {
+    animation: blink-indigo 2s infinite;
+  }
+
+  .blink-indigo-odd {
+    animation: blink-indigo 2s infinite 1s;
+  }
+
+  /* Modal styles */
+  .modal-container {
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid linear-gradient(to right, #e7e5e4, #d6d3d1);
+    transform: scale(0.9);
+    animation: modalOpen 0.4s ease-out forwards;
+  }
+
+  @keyframes modalOpen {
+    to { transform: scale(1); }
+  }
+
+  /* Read More and link styles */
+  .read-more, .event-link {
+    transition: color 0.2s ease, transform 0.2s ease, scale 0.2s ease;
+  }
+
+  .read-more:hover, .event-link:hover {
+    color: #1e3a8a;
+    transform: translateX(4px) scale(1.05);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .events-grid {
+      grid-template-columns: 1fr;
+      padding: 0 16px;
+    }
+    .header-section {
+      padding: 4rem 1rem;
+    }
+  }
+`;
+
 const UpcomingEvents = () => {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Color variants for event cards
-  const cardColors = [
-    'from-teal-100 to-teal-50',
-    'from-emerald-100 to-emerald-50',
-    'from-cyan-100 to-cyan-50',
-    'from-sky-100 to-sky-50',
-    'from-blue-100 to-blue-50',
-    'from-indigo-100 to-indigo-50'
-  ];
-
-  const getCardColor = (index) => {
-    return cardColors[index % cardColors.length];
-  };
 
   // Fetch events from the API
   useEffect(() => {
@@ -61,7 +133,7 @@ const UpcomingEvents = () => {
       <>
         {text.slice(0, maxLength)}...
         <span 
-          className="text-blue-600 hover:text-blue-800 cursor-pointer font-medium ml-1"
+          className="read-more text-blue-600 font-medium ml-1 cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
             openModal(event);
@@ -75,10 +147,10 @@ const UpcomingEvents = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 to-blue-50">
+      <div className="min-h-screen flex items-center justify-center bg-[#fefce8]">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-xl font-medium text-gray-700">Loading Events...</p>
+          <div className="w-12 h-12 border-4 border-[#4f46e5] border-t-[#1e3a8a] rounded-full animate-spin mx-auto"></div>
+          <p className="mt-4 text-lg font-medium text-[#1c1917]">Loading Events...</p>
         </div>
       </div>
     );
@@ -86,18 +158,18 @@ const UpcomingEvents = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 to-blue-50 p-4">
-        <div className="bg-white p-8 rounded-xl shadow-lg text-center max-w-md border border-red-100">
+      <div className="min-h-screen flex items-center justify-center bg-[#fefce8] p-4">
+        <div className="bg-white p-8 rounded-xl shadow-lg text-center max-w-md border border-[#e7e5e4]">
           <div className="text-red-500 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Error Loading Events</h2>
-          <p className="text-gray-600 mb-6">{error}</p>
+          <h2 className="text-xl font-semibold text-[#1c1917] mb-2">Error Loading Events</h2>
+          <p className="text-[#4b5563] mb-6">{error}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-lg hover:from-teal-600 hover:to-teal-700 transition-all shadow-md"
+            className="px-6 py-2 bg-[#4f46e5] text-white rounded-lg hover:bg-[#4338ca] transition-all shadow-md"
           >
             Try Again
           </button>
@@ -107,105 +179,79 @@ const UpcomingEvents = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50">
+    <div className="events-board">
+      <style>{styles}</style>
       {/* Header Section */}
-      <div 
-        className="relative py-24 text-center text-white overflow-hidden"
-        style={{ backgroundColor: 'rgb(15, 118, 110)' }}
-      >
-        {/* Decorative Elements */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-          <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-1/4 left-1/2 w-64 h-64 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-6 animate-fade-in-down">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-teal-100">
-              Upcoming Events
-            </span>
+      <div className="header-section text-center text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <h1 className="text-5xl font-extrabold mb-4 animate-fade-in-down tracking-tight text-white">
+            Upcoming Events
           </h1>
-          <p className="text-xl font-light max-w-2xl mx-auto text-teal-100 animate-fade-in-up delay-100">
+          <p className="text-lg font-light max-w-2xl mx-auto text-amber-100 animate-fade-in-up delay-100">
             Discover exciting events and activities happening soon
           </p>
-          <div className="mt-8 animate-fade-in-up delay-200">
-            <div className="inline-flex items-center">
-              <div className="w-16 h-1 bg-teal-300 rounded-full"></div>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-2 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-              </svg>
-              <div className="w-16 h-1 bg-teal-300 rounded-full"></div>
-            </div>
-          </div>
         </div>
-
         {/* Curved Bottom Edge */}
-        <div className="absolute -bottom-1 left-0 right-0">
-          <svg viewBox="0 0 1440 60" className="w-full h-16 fill-current text-white">
+        <div className="absolute bottom-0 left-0 right-0 z-0">
+          <svg viewBox="0 0 1440 60" className="w-full h-12 fill-current text-[#fefce8]">
             <path d="M0,0V60H1440V0C1225,60,1013,60,720,60S215,60,0,0Z"></path>
           </svg>
         </div>
       </div>
 
       {/* Events Container */}
-      <div className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
         {events.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-2xl shadow-lg">
-            <div className="text-teal-400 mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="text-center py-12 bg-white rounded-xl shadow-lg">
+            <div className="text-[#4f46e5] mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-xl font-medium text-gray-600">No upcoming events</h3>
-            <p className="text-gray-500 mt-2">Check back later for new events</p>
+            <h3 className="text-lg font-medium text-[#1c1917]">No upcoming events</h3>
+            <p className="text-[#4b5563] mt-2">Check back later for new events</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="events-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event, index) => (
               <div 
                 key={event._id}
-                className={`bg-gradient-to-br ${getCardColor(index)} rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer`}
+                className={`card p-6 cursor-pointer ${index % 2 === 0 ? 'blink-indigo-even' : 'blink-indigo-odd'}`}
+                style={{ borderLeft: '4px solid #4f46e5', animation: `fadeInUp 0.5s ease-out ${index * 0.08}s forwards` }}
                 onClick={() => openModal(event)}
-                style={{
-                  animation: `fadeInUp 0.5s ease-out ${index * 0.1}s forwards`,
-                  opacity: 0
-                }}
               >
-                <div className="p-6">
-                  <div className="flex items-center mb-3">
-                    <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center mr-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <h2 className="text-xl font-bold text-gray-800 line-clamp-1">
-                      {event.subject}
-                    </h2>
+                <div className="flex items-center mb-4">
+                  <div className="w-8 h-8 rounded-full bg-[#4f46e5]/10 flex items-center justify-center mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#4f46e5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
                   </div>
-                  <p className="text-gray-600 mb-4 line-clamp-3">
-                    {truncateText(event.body, 100, event)}
-                  </p>
-                  {event.link && (
-                    <a 
-                      href={event.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-block mt-2 text-sm text-teal-600 hover:text-teal-800 font-medium"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      Event Link →
-                    </a>
-                  )}
-                  <div className="text-xs text-gray-500 mt-4">
-                    {new Date(event.createdAt).toLocaleString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit"
-                    })}
-                  </div>
+                  <h2 className="text-xl font-semibold text-[#1c1917] line-clamp-1">
+                    {event.subject}
+                  </h2>
+                </div>
+                <p className="text-[#4b5563] mb-4 line-clamp-3 text-sm">
+                  {truncateText(event.body, 100, event)}
+                </p>
+                {event.link && (
+                  <a 
+                    href={event.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="event-link inline-block mt-2 text-xs text-indigo-600 hover:text-indigo-800 font-medium"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Event Link →
+                  </a>
+                )}
+                <div className="text-xs text-[#6b7280] mt-4">
+                  {new Date(event.createdAt).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                  })}
                 </div>
               </div>
             ))}
@@ -215,17 +261,16 @@ const UpcomingEvents = () => {
 
       {/* Enhanced Modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div 
-            className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-modal-in border-4 border-white"
+            className="modal-container max-w-2xl w-full max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header with Gradient */}
-            <div className="bg-gradient-to-r from-teal-600 to-blue-600 p-6 text-white">
+            <div className="p-6">
               <div className="flex justify-between items-start">
                 <div>
-                  <h2 className="text-2xl font-bold">{selectedEvent.subject}</h2>
-                  <div className="text-sm opacity-90 mt-1">
+                  <h2 className="text-2xl font-semibold text-[#1c1917]">{selectedEvent.subject}</h2>
+                  <div className="text-sm text-[#6b7280] mt-1">
                     {new Date(selectedEvent.createdAt).toLocaleString("en-US", {
                       year: "numeric",
                       month: "long",
@@ -237,19 +282,15 @@ const UpcomingEvents = () => {
                 </div>
                 <button 
                   onClick={closeModal}
-                  className="p-2 rounded-full hover:bg-white/20 transition-colors"
+                  className="p-2 rounded-full hover:bg-[#4f46e5]/10 transition-colors"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#4f46e5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
-            </div>
-
-            {/* Modal Content */}
-            <div className="overflow-y-auto max-h-[calc(90vh-120px)] p-6">
-              <div className="prose max-w-none">
-                <p className="whitespace-pre-wrap text-gray-700">
+              <div className="mt-4 max-h-[calc(90vh-160px)] overflow-y-auto">
+                <p className="text-[#4b5563] whitespace-pre-wrap text-base">
                   {selectedEvent.body}
                 </p>
                 {selectedEvent.link && (
@@ -258,7 +299,7 @@ const UpcomingEvents = () => {
                       href={selectedEvent.link} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
+                      className="inline-flex items-center px-4 py-2 bg-[#4f46e5] text-white rounded-lg hover:bg-[#4338ca] transition-colors"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -269,12 +310,10 @@ const UpcomingEvents = () => {
                 )}
               </div>
             </div>
-
-            {/* Modal Footer */}
-            <div className="p-4 border-t border-gray-100 bg-gray-50">
+            <div className="p-4 border-t border-[#e7e5e4] bg-[#fefce8]">
               <button 
                 onClick={closeModal}
-                className="w-full py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-lg hover:from-teal-600 hover:to-teal-700 transition-all"
+                className="w-full py-2 bg-[#4f46e5] text-white rounded-lg hover:bg-[#4338ca] transition-all"
               >
                 Close Event
               </button>
@@ -293,16 +332,6 @@ const UpcomingEvents = () => {
           to {
             opacity: 1;
             transform: translateY(0);
-          }
-        }
-        @keyframes modal-in {
-          from {
-            opacity: 0;
-            transform: scale(0.95) translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1) translateY(0);
           }
         }
         @keyframes fade-in-down {
@@ -325,37 +354,14 @@ const UpcomingEvents = () => {
             transform: translateY(0);
           }
         }
-        @keyframes blob {
-          0% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          33% {
-            transform: translate(30px, -50px) scale(1.1);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
-          }
-          100% {
-            transform: translate(0px, 0px) scale(1);
-          }
-        }
         .animate-fade-in-down {
           animation: fade-in-down 0.6s ease-out forwards;
         }
         .animate-fade-in-up {
           animation: fade-in-up 0.6s ease-out forwards;
         }
-        .animate-modal-in {
-          animation: modal-in 0.3s ease-out forwards;
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
+        .delay-100 {
+          animation-delay: 0.1s;
         }
       `}</style>
     </div>

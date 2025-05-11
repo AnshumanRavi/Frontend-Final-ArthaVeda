@@ -11,8 +11,9 @@ const HomePage = () => {
     <>
     <Scroll />
     <NewSite />
-    <Tiles />
+    
     <Notice />
+    <Tiles />
     <AboutUS />
     <SocialMedia />
 

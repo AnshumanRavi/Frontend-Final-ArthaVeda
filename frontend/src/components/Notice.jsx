@@ -1,55 +1,116 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Define the blinking animation using CSS
+// Define modern styles with blinking effect
 const styles = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  .notice-container {
+    font-family: 'Inter', sans-serif;
+    background-color: rgb(249, 226, 228); /* Light pink background */
+  }
+
+  .scroll-container {
+    height: 256px; /* h-64 */
+    overflow: hidden;
+    position: relative;
+  }
+
+  .scroll-content {
+    animation: scroll 20s linear infinite;
+  }
+
+  .scroll-content.paused {
+    animation-play-state: paused;
+  }
+
+  @keyframes scroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+  }
+
   @keyframes blink {
     0%, 100% { background-color: #fee2e2; } /* Light red */
     50% { background-color: #dbeafe; } /* Light blue */
   }
-  .blink-red-blue {
+
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    animation: none; /* Stop blinking on hover */
+  }
+
+  .blink-even {
     animation: blink 2s infinite;
   }
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+
+  .blink-odd {
+    animation: blink 2s infinite 1s; /* Offset by 1s for alternate blinking */
+  }
+
+  .modal-container {
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(145deg, #ffffff, #f9fafb);
+  }
+
+  .view-all-btn {
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .view-all-btn:hover {
+    color: #2563eb;
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 767px) {
+    .notice-inner-container {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 0 16px;
+    }
+    .scroll-container {
+      height: 200px; /* Slightly shorter on mobile */
+    }
+    .modal-container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
   }
 `;
 
 const Modal = ({ content, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <style>
-        {`
-          @media (max-width: 767px) {
-            .modal-container {
-              padding-left: 1rem;
-              padding-right: 1rem;
-              max-height: 80vh; /* Limit height to 80% of viewport height */
-              overflow-y: auto; /* Enable vertical scrolling */
-            }
-          }
-        `}
-      </style>
-      <div className="modal-container bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full mx-4 relative">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+      <div className="modal-container bg-white p-8 rounded-lg max-w-2xl w-full mx-4 relative">
         <button
-          className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
           onClick={onClose}
         >
-          X
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
-        <div className="font-semibold">{content.subject}</div>
-        <div className="text-sm text-gray-600 mt-2 whitespace-pre-wrap break-words">
+        <h3 className="text-xl font-semibold text-gray-800">{content.subject}</h3>
+        <p className="text-sm text-gray-600 mt-3 leading-relaxed whitespace-pre-wrap break-words">
           {content.body}
-        </div>
+        </p>
         {content.link && (
           <a
             href={content.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:text-blue-600 mt-4 inline-block"
+            className="text-blue-600 hover:text-blue-700 mt-4 inline-block font-medium transition-colors"
           >
             Learn More
           </a>
@@ -59,87 +120,49 @@ const Modal = ({ content, onClose }) => {
   );
 };
 
-const ScrollableList = ({ items, title, navigateTo, bgColors }) => {
+const ScrollableList = ({ items, title, navigateTo, accentColor }) => {
   const navigate = useNavigate();
-  const scrollRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
-  useEffect(() => {
-    const container = scrollRef.current;
-    const scrollHeight = container.scrollHeight / 2;
-    let timeoutId;
-
-    const scrollAnimation = () => {
-      if (!isPaused) {
-        container.scrollBy({ top: 1, behavior: "auto" });
-
-        if (container.scrollTop >= scrollHeight) {
-          container.scrollTop = 0;
-        }
-      }
-      timeoutId = setTimeout(scrollAnimation, 30);
-    };
-
-    scrollAnimation();
-
-    return () => {
-      clearTimeout(timeoutId);
-      container.scrollTop = 0;
-    };
-  }, [isPaused]);
-
-  const handleMouseEnter = () => {
-    setIsPaused(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsPaused(false);
-    scrollRef.current.scrollTop = 0;
-  };
-
-  const handleItemClick = (item) => {
-    setModalContent(item);
-  };
-
-  const closeModal = () => {
-    setModalContent(null);
-  };
+  // Adjust animation duration based on number of items
+  const animationDuration = items.length * 3; // 3 seconds per item
 
   return (
-    <div className="flex-1 p-6 border border-gray-200 rounded-lg shadow-md bg-white" style={{ width: '300px' }}>
-      <style>{styles}</style> {/* Inject the CSS animation */}
-      <div className="flex justify-between items-center mb-4">
+    <div className="flex-1 p-6 bg-white rounded-xl shadow-lg" style={{ width: '280px' }}>
+      <style>{styles}</style>
+      <div className="flex justify-between items-center mb-5">
         <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
         <button
           onClick={() => navigate(navigateTo)}
-          className="text-blue-500 hover:text-blue-600 transition-colors"
+          className="view-all-btn text-blue-500 font-medium hover:text-blue-600"
         >
           View All
         </button>
       </div>
       <div
-        ref={scrollRef}
-        className="relative h-64 overflow-y-auto"
+        className="scroll-container"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         aria-live="polite"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
-        {[...items, ...items].map((item, index) => (
-          <div
-            key={index}
-            className={`p-3 mb-2 rounded-lg blink-red-blue cursor-pointer`}
-            style={{ animationDelay: `${index * 1}s` }} // Add staggered delay
-            onClick={() => handleItemClick(item)}
-          >
-            <div className="font-semibold">{item.subject}</div>
-            <div className="text-sm text-gray-600 line-clamp-3">
-              {item.body}
+        <div className={`scroll-content ${isPaused ? 'paused' : ''}`} style={{ animationDuration: `${animationDuration}s` }}>
+          {[...items, ...items].map((item, index) => (
+            <div
+              key={index}
+              className={`card p-4 mb-3 cursor-pointer ${index % 2 === 0 ? 'blink-even' : 'blink-odd'}`}
+              style={{ borderLeft: `4px solid ${accentColor}` }}
+              onClick={() => setModalContent(item)}
+            >
+              <h3 className="font-semibold text-gray-800">{item.subject}</h3>
+              <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                {item.body}
+              </p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      {modalContent && <Modal content={modalContent} onClose={closeModal} />}
+      {modalContent && <Modal content={modalContent} onClose={() => setModalContent(null)} />}
     </div>
   );
 };
@@ -147,23 +170,16 @@ const ScrollableList = ({ items, title, navigateTo, bgColors }) => {
 const Notice = () => {
   const [notices, setNotices] = useState([]);
   const [events, setEvents] = useState([]);
-  const bgColors = ["bg-red-100", "bg-blue-100"];
 
   // Fetch notices from the API
   useEffect(() => {
     const fetchNotices = async () => {
       try {
         const response = await fetch("https://dept-economics-motilal.onrender.com/notice/all");
-        if (!response.ok) {
-          throw new Error("Failed to fetch notices");
-        }
+        if (!response.ok) throw new Error("Failed to fetch notices");
         const data = await response.json();
-        console.log("Fetched Notices:", data); // Log the entire response
-
-        // Get the last 10 notices
-        const lastTenNotices = data.notices.slice(-10);
-        lastTenNotices.reverse();
-        setNotices(lastTenNotices); // Set the last 10 notices
+        const lastTenNotices = data.notices.slice(-10).reverse();
+        setNotices(lastTenNotices);
       } catch (error) {
         console.error("Error fetching notices:", error);
       }
@@ -177,18 +193,10 @@ const Notice = () => {
     const fetchEvents = async () => {
       try {
         const response = await fetch("https://dept-economics-motilal.onrender.com/upcomingEvents/all");
-        if (!response.ok) {
-          throw new Error("Failed to fetch events");
-        }
+        if (!response.ok) throw new Error("Failed to fetch events");
         const data = await response.json();
-        console.log("Fetched Events:", data); // Log the entire response
-
-        // Extract the `events` array from the response
-        const eventsData = data.events;
-
-        // Get the last 10 events
-        const lastTenEvents = eventsData.slice(-10);
-        setEvents(lastTenEvents); // Set the last 10 events
+        const lastTenEvents = data.events.slice(-10);
+        setEvents(lastTenEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -198,29 +206,20 @@ const Notice = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center bg-[rgb(249, 226, 228)] p-4 h-auto">
-      <style>
-        {`
-          @media (max-width: 767px) {
-            .notice-container {
-              flex-direction: column;
-              align-items: center;
-            }
-          }
-        `}
-      </style>
-      <div className="notice-container flex flex-col md:flex-row w-full max-w-5xl gap-24 p-4">
+    <div className="notice-container flex justify-center items-center min-h-[400px] py-8">
+      <style>{styles}</style>
+      <div className="notice-inner-container flex flex-col md:flex-row w-full max-w-4xl gap-8 mx-auto px-4">
         <ScrollableList
           items={notices}
           title="Notices"
           navigateTo="/notices"
-          bgColors={bgColors}
+          accentColor="#ef4444" // Red accent for notices
         />
         <ScrollableList
           items={events}
           title="Upcoming Events"
           navigateTo="/upcoming-events"
-          bgColors={bgColors}
+          accentColor="#3b82f6" // Blue accent for events
         />
       </div>
     </div>

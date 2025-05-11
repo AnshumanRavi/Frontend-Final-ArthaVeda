@@ -114,7 +114,7 @@ const Tiles = () => {
 
   const data = [
     { text: "FACULTY", bg: "#BA210E", image: "STUDENT.png", route: "/faculty" },
-    { text: "ALUMNI", bg: "#F0CACA", image: "ALUMNI.png", route: "/alumni" },
+    { text: "PAST EVENTS", bg: "#F0CACA", image: "pevents.png", route: "/Past-Events" },
     { text: "COURSES", bg: "#BA210E", image: "COURSES.png", route: "/courses/course-details" },
     {
       text: "MAGAZINE",
@@ -124,7 +124,7 @@ const Tiles = () => {
     },
     { text: "PLACEMENT", bg: "#F0CACA", image: "RECRUITMENT.png", route: "/placement" },
     { text: "COMMITTEES", bg: "#BA210E", image: "FACULTY.png", route: "/committees" },
-    { text: "OFFICE BEARERS", bg: "#F0CACA", image: "ob1.png", route: "/office-bearers" },
+    { text: "ALUMNI", bg: "#F0CACA", image: "ALUMNI.png", route: "/alumni" },
   ];
 
   const handleTileClick = (route) => {
@@ -136,7 +136,7 @@ const Tiles = () => {
       <div
         className="flex flex-col md:flex-row justify-center items-center w-full px-4 md:px-10 py-5"
         style={{
-          background: "linear-gradient(135deg,rgb(249, 226, 228),rgb(249, 226, 228))",
+          background: "linear-gradient(135deg,rgb(243, 243, 243),rgb(251, 251, 251))",
         }}
       >
         {/* Left Image */}
