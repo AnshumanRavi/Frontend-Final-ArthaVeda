@@ -8,6 +8,7 @@ const AboutUS = () => {
   const navigate = useNavigate();
   const [currentProfile, setCurrentProfile] = useState(0);
   const [isFading, setIsFading] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const profiles = [
     {
@@ -29,6 +30,15 @@ const AboutUS = () => {
       email: 'arthveda@mlne.du.ac.in'
     }
   ];
+
+  // Department data with Vision and Mission
+  const department = {
+    vision: 'The Department of Economics, established in 1965 under Motilal Nehru College (Evening), University of Delhi, envisions fostering a deep understanding of economic principles, preparing students for analytical and policy-oriented roles, and contributing to research that addresses real-world economic challenges.',
+    mission: 'The Department endeavours to provide students with a strong foundation in economic theory, policy analysis, market behaviour, and applied research by equipping students with the ability to critically evaluate economic policies and market mechanisms.'
+  };
+
+  // Truncated vision for initial display (approximately half)
+  const truncatedVision = department.vision.split('.').slice(0, 1).join('.') + '.';
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -77,6 +87,10 @@ const AboutUS = () => {
     navigate('/msgs');
   };
 
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <div className="my-5">
       <div
@@ -94,41 +108,118 @@ const AboutUS = () => {
           flexWrap: 'wrap',
         }}
       >
-        {/* First Cell - About Us */}
+        {/* First Cell - Vision and Mission */}
         <div
           ref={firstDivRef}
           style={{
             flex: 3,
-            padding: '20px',
-            backgroundColor: 'rgba(255, 255, 255)',
-            borderRadius: '10px',
+            padding: '30px',
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            borderRadius: '12px',
             minWidth: '250px',
             overflow: 'auto',
-            paddingLeft: '40px',
-            paddingRight: '40px',
+            boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
+            border: '1px solid #e0e0e0',
             transform: 'translateY(100px)',
             transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
             opacity: '0',
           }}
         >
-          <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>ABOUT US</h1>
-          <p>
-            Founded in 2017, Arthaveda is the Economics Department of Motilal Nehru College
-            (Evening), University of Delhi...
-            <Link to="/about" style={{ color: 'neutral' }}> Read More</Link>
-          </p>
-          <br />
-          <h2><b>Vision</b></h2>
-          <p>
-            Arthaveda envisions fostering an intellectually stimulating environment...
-            <Link to="/about" style={{ color: 'neutral' }}> Read More</Link>
-          </p>
-          <br />
-          <h2><b>Mission</b></h2>
-          <p>
-            Arthaveda is committed to promoting academic rigor, critical inquiry...
-            <Link to="/about" style={{ color: 'neutral' }}> Read More</Link>
-          </p>
+          <h1
+            style={{
+              textAlign: 'center',
+              fontWeight: '800',
+              fontSize: '2rem',
+              color: '#1a202c',
+              marginBottom: '20px',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+            }}
+          >
+            Department of Economics
+          </h1>
+          <div
+            style={{
+              maxHeight: isExpanded ? 'none' : '400px',
+              overflow: isExpanded ? 'visible' : 'hidden',
+              transition: 'max-height 0.3s ease-out',
+            }}
+          >
+            <div style={{ marginBottom: '20px' }}>
+              <h2
+                style={{
+                  fontWeight: '600',
+                  fontSize: '1.5rem',
+                  color: '#2d3748',
+                  marginBottom: '10px',
+                  borderLeft: '4px solid #3182ce',
+                  paddingLeft: '10px',
+                }}
+              >
+                Vision
+              </h2>
+              <p
+                style={{
+                  color: '#4a5568',
+                  fontSize: '1rem',
+                  lineHeight: '1.6',
+                  textAlign: 'justify',
+                }}
+              >
+                {isExpanded ? department.vision : truncatedVision}
+              </p>
+            </div>
+            {isExpanded && (
+              <div style={{ marginBottom: '20px' }}>
+                <h2
+                  style={{
+                    fontWeight: '600',
+                    fontSize: '1.5rem',
+                    color: '#2d3748',
+                    marginBottom: '10px',
+                    borderLeft: '4px solid #3182ce',
+                    paddingLeft: '10px',
+                  }}
+                >
+                  Mission
+                </h2>
+                <p
+                  style={{
+                    color: '#4a5568',
+                    fontSize: '1rem',
+                    lineHeight: '1.6',
+                    textAlign: 'justify',
+                  }}
+                >
+                  {department.mission}
+                </p>
+              </div>
+            )}
+          </div>
+          {!isExpanded && (
+            <button
+              onClick={toggleExpand}
+              style={{
+                backgroundColor: '#3182ce',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '10px 20px',
+                cursor: 'pointer',
+                marginTop: '20px',
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                fontSize: '1rem',
+                fontWeight: '600',
+                transition: 'background-color 0.2s ease',
+              }}
+              onMouseOver={(e) => (e.target.style.backgroundColor = '#2b6cb0')}
+              onMouseOut={(e) => (e.target.style.backgroundColor = '#3182ce')}
+            >
+              Read More
+            </button>
+          )}
         </div>
 
         {/* Second Cell - Profile Card Carousel */}
@@ -137,7 +228,7 @@ const AboutUS = () => {
           style={{
             flex: 2,
             padding: '20px',
-            backgroundColor: 'rgba(255, 255, 255)',
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
             borderRadius: '15px',
             display: 'flex',
             flexDirection: 'column',
@@ -145,7 +236,7 @@ const AboutUS = () => {
             minWidth: '250px',
             overflow: 'hidden',
             border: '1px solid #e0e0e0',
-            boxShadow: '0 4px 8px rgba(0, 0, 0)',
+            boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
             transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
             opacity: '0',
             transform: 'translateY(100px)',
@@ -182,7 +273,7 @@ const AboutUS = () => {
               fontWeight: 'bold',
               margin: '5px 0',
               fontSize: '1.5rem',
-              color: '#333',
+              color: '#2d3748',
               textAlign: 'center',
               width: '100%',
               opacity: isFading ? 0 : 1,
@@ -196,7 +287,7 @@ const AboutUS = () => {
             style={{
               margin: '5px 0',
               fontSize: '1rem',
-              color: '#555',
+              color: '#4a5568',
               textAlign: 'center',
               width: '100%',
               opacity: isFading ? 0 : 1,
@@ -212,7 +303,7 @@ const AboutUS = () => {
             rel="noopener noreferrer"
             style={{
               margin: '5px 0',
-              color: 'blue',
+              color: '#3182ce',
               fontSize: '0.9rem',
               textAlign: 'center',
               width: '100%',
@@ -226,28 +317,30 @@ const AboutUS = () => {
           </a>
         </div>
 
-        {/* Third Cell - Messages */}
+        {/* Third Cell - Messages (Vertically Centered) */}
         <div
           ref={thirdDivRef}
           style={{
             flex: 3,
-            padding: '20px',
-            paddingLeft: '40px',
-            paddingRight: '40px',
+            padding: '20px 40px',
             backgroundColor: 'rgb(255, 255, 255)',
             borderRadius: '10px',
             minWidth: '250px',
-            overflow: 'auto',
+            minHeight: '200px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
             transform: 'translateY(100px)',
             transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
             opacity: '0',
           }}
         >
-          <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>MESSAGES</h1>
-          <p>
+          <h1 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '10px' }}>MESSAGES</h1>
+          <p style={{ textAlign: 'center', marginBottom: '10px' }}>
             Read inspiring messages from our faculty members and learn about their vision for the department.
           </p>
-          <button 
+          <button
             onClick={handleReadMore}
             style={{
               backgroundColor: '#f0f0f0',
@@ -255,10 +348,7 @@ const AboutUS = () => {
               borderRadius: '5px',
               padding: '8px 16px',
               cursor: 'pointer',
-              marginTop: '15px',
               display: 'block',
-              marginLeft: 'auto',
-              marginRight: 'auto'
             }}
           >
             Read Messages

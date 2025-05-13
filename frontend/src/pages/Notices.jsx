@@ -101,7 +101,7 @@ const NoticeBoard = () => {
           throw new Error("Failed to fetch notices");
         }
         const data = await response.json();
-        setNotices(data.notices.reverse()); // Reverse to show latest first
+        setNotices(data.notices); // Reverse to show latest first
       } catch (error) {
         console.error("Error fetching notices:", error);
         setError(error.message);
@@ -282,6 +282,25 @@ const NoticeBoard = () => {
                 <p className="text-[#4b5563] whitespace-pre-wrap text-base">
                   {selectedNotice.body}
                 </p>
+                {selectedNotice.links && selectedNotice.links.length > 0 && (
+                  <div className="mt-4">
+                    {selectedNotice.links.map((link, index) => {
+                      // Ensure the link is absolute by prepending https:// if no protocol is present
+                      const formattedLink = link.match(/^https?:\/\//) ? link : `https://${link}`;
+                      return (
+                        <a
+                          key={index}
+                          href={formattedLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="read-more text-blue-600 hover:text-blue-700 block mt-2 font-medium transition-colors"
+                        >
+                          Link {index + 1}
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
             <div className="p-4 border-t border-[#e7e5e4] bg-[#fefce8]">

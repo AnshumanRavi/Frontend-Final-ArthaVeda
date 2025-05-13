@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useSwipeable } from 'react-swipeable';
 
 const PastEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeEvent, setActiveEvent] = useState(null);
 
   // Color palette variants
@@ -52,12 +54,40 @@ const PastEvents = () => {
   // Handle image click
   const handleImageClick = (image, event) => {
     setSelectedImage(image);
+    setCurrentImageIndex(event.cloudinaryLinks.indexOf(image));
     setActiveEvent(event);
   };
+
+  // Navigate to next image
+  const handleNextImage = () => {
+    if (activeEvent && activeEvent.cloudinaryLinks) {
+      const nextIndex = (currentImageIndex + 1) % activeEvent.cloudinaryLinks.length;
+      setSelectedImage(activeEvent.cloudinaryLinks[nextIndex]);
+      setCurrentImageIndex(nextIndex);
+    }
+  };
+
+  // Navigate to previous image
+  const handlePrevImage = () => {
+    if (activeEvent && activeEvent.cloudinaryLinks) {
+      const prevIndex = (currentImageIndex - 1 + activeEvent.cloudinaryLinks.length) % activeEvent.cloudinaryLinks.length;
+      setSelectedImage(activeEvent.cloudinaryLinks[prevIndex]);
+      setCurrentImageIndex(prevIndex);
+    }
+  };
+
+  // Swipe handlers for mobile
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => handleNextImage(),
+    onSwipedRight: () => handlePrevImage(),
+    trackMouse: false, // Only track touch events
+    delta: 10, // Minimum swipe distance
+  });
 
   // Close image modal
   const closeModal = () => {
     setSelectedImage(null);
+    setCurrentImageIndex(0);
     setActiveEvent(null);
   };
 
@@ -186,10 +216,10 @@ const PastEvents = () => {
                   <div className="p-4">
                     {(event.cloudinaryLinks?.length > 0 || event.googleDriveLink) ? (
                       <div className="grid grid-cols-2 gap-2">
-                        {event.cloudinaryLinks?.slice(0, 4).map((image, idx) => (
+                        {event.cloudinaryLinks?.slice(0, 3).map((image, idx) => (
                           <div
                             key={idx}
-                            className={`relative overflow-hidden rounded-lg aspect-square cursor-pointer transition-all duration-300 ${idx === 3 && event.cloudinaryLinks.length > 4 ? 'bg-black/20' : ''}`}
+                            className={`relative overflow-hidden rounded-lg aspect-square cursor-pointer transition-all duration-300 ${idx === 2 && event.cloudinaryLinks.length > 3 ? 'bg-black/20' : ''}`}
                             onClick={() => handleImageClick(image, event)}
                           >
                             <img
@@ -197,9 +227,9 @@ const PastEvents = () => {
                               alt={`Event ${idx + 1}`}
                               className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                             />
-                            {idx === 3 && event.cloudinaryLinks.length > 4 && (
+                            {idx === 2 && event.cloudinaryLinks.length > 3 && (
                               <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-bold text-lg">
-                                +{event.cloudinaryLinks.length - 4}
+                                +{event.cloudinaryLinks.length - 2}
                               </div>
                             )}
                           </div>
@@ -212,8 +242,19 @@ const PastEvents = () => {
                             className="bg-gradient-to-br from-gray-50 to-white rounded-lg aspect-square flex flex-col items-center justify-center text-center p-3 hover:from-gray-100 hover:to-gray-50 transition-all duration-300 border border-gray-200"
                           >
                             <div className="text-red-500 mb-2">
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-8 w-8"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                                />
                               </svg>
                             </div>
                             <span className="text-sm font-medium text-gray-600">View All Photos</span>
@@ -278,14 +319,57 @@ const PastEvents = () => {
             </div>
 
             {/* Modal Content */}
-            <div className="overflow-y-auto max-h-[calc(90vh-56px)] bg-gradient-to-br from-gray-50 to-white">
-              <div className="p-6">
-                <div className="relative rounded-xl overflow-hidden shadow-lg border-4 border-white">
+            <div className="overflow-y-auto max-h-[calc(90vh-56px)] bg-gradient-to-br from-gray-50 to-white relative">
+              <div className="p-6 relative">
+                <div className="relative rounded-xl overflow-hidden shadow-lg border-4 border-white" {...swipeHandlers}>
                   <img
                     src={selectedImage}
                     alt="Selected Event"
                     className="w-full h-auto max-h-[60vh] object-contain mx-auto"
                   />
+                  {/* Navigation Arrows (Hidden on Mobile) */}
+                  {activeEvent.cloudinaryLinks?.length > 1 && (
+                    <>
+                      <button
+                        onClick={handlePrevImage}
+                        className="hidden sm:block absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6 text-gray-800"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 19l-7-7 7-7"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={handleNextImage}
+                        className="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6 text-gray-800"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -294,8 +378,19 @@ const PastEvents = () => {
                 <div className="p-6 pt-0">
                   <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-inner">
                     <h4 className="font-medium text-gray-700 mb-3 flex items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-2 text-red-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                        />
                       </svg>
                       Event Gallery
                     </h4>
@@ -303,8 +398,13 @@ const PastEvents = () => {
                       {activeEvent.cloudinaryLinks.map((image, idx) => (
                         <div
                           key={idx}
-                          className={`aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all ${selectedImage === image ? 'border-red-500 scale-105' : 'border-transparent hover:border-gray-300'}`}
-                          onClick={() => setSelectedImage(image)}
+                          className={`aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all ${
+                            selectedImage === image ? 'border-red-500 scale-105' : 'border-transparent hover:border-gray-300'
+                          }`}
+                          onClick={() => {
+                            setSelectedImage(image);
+                            setCurrentImageIndex(idx);
+                          }}
                         >
                           <img
                             src={image}
@@ -327,8 +427,19 @@ const PastEvents = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 transition-all shadow-lg w-full"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                      />
                     </svg>
                     View Complete Album on Google Drive
                   </a>

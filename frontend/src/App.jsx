@@ -35,6 +35,7 @@ const App = () => {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/placement" element={<Placement />} />
+        <Route path="/recent-publication" element={<Placement />} />
         <Route path="/developers" element={<Developers />} />
         <Route path="/economic-society/office-bearers" element={<OfficeBearers />} />
         <Route path="/notices" element={<Notices />} />
@@ -49,6 +50,7 @@ const App = () => {
         <Route path="/msgs" element={<Messages />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/courses/course-details" element={<CourseDetails />} />
+
       </Route>
     )
   );

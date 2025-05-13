@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Define modern styles with blinking effect
+// Define modern styles with blinking effect and scrollbar
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -12,8 +12,28 @@ const styles = `
 
   .scroll-container {
     height: 256px; /* h-64 */
-    overflow: hidden;
+    overflow-y: auto; /* Enable vertical scrollbar */
     position: relative;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #a1a1aa #f1f1f1; /* Firefox */
+  }
+
+  .scroll-container::-webkit-scrollbar {
+    width: 8px; /* Webkit browsers (Chrome, Safari) */
+  }
+
+  .scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb {
+    background: #a1a1aa;
+    border-radius: 4px;
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #78788c;
   }
 
   .scroll-content {
@@ -22,6 +42,10 @@ const styles = `
 
   .scroll-content.paused {
     animation-play-state: paused;
+  }
+
+  .scroll-content.no-animation {
+    animation: none;
   }
 
   @keyframes scroll {
@@ -105,15 +129,24 @@ const Modal = ({ content, onClose }) => {
         <p className="text-sm text-gray-600 mt-3 leading-relaxed whitespace-pre-wrap break-words">
           {content.body}
         </p>
-        {content.link && (
-          <a
-            href={content.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-700 mt-4 inline-block font-medium transition-colors"
-          >
-            Learn More
-          </a>
+        {content.links && content.links.length > 0 && (
+          <div className="mt-4">
+            {content.links.map((link, index) => {
+              // Ensure the link is absolute by prepending https:// if no protocol is present
+              const formattedLink = link.match(/^https?:\/\//) ? link : `https://${link}`;
+              return (
+                <a
+                  key={index}
+                  href={formattedLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-700 block mt-2 font-medium transition-colors"
+                >
+                  Link {index + 1}
+                </a>
+              );
+            })}
+          </div>
         )}
       </div>
     </div>
@@ -123,10 +156,75 @@ const Modal = ({ content, onClose }) => {
 const ScrollableList = ({ items, title, navigateTo, accentColor }) => {
   const navigate = useNavigate();
   const [isPaused, setIsPaused] = useState(false);
+  const [hasAnimation, setHasAnimation] = useState(true);
   const [modalContent, setModalContent] = useState(null);
+  const scrollContainerRef = useRef(null);
+  const resumeTimerRef = useRef(null);
 
   // Adjust animation duration based on number of items
   const animationDuration = items.length * 3; // 3 seconds per item
+
+  // Handle hover/touch start to scroll to top (if scrolling) and stop animation
+  const handleEnter = (eventType) => {
+    console.log(`${eventType} triggered, isPaused: ${isPaused}, hasAnimation: ${hasAnimation}`);
+    // Clear any existing timer to reset the 5-second pause
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+      console.log("Cleared existing resume timer");
+    }
+    // Handle both TouchStart and MouseEnter
+    if (hasAnimation && scrollContainerRef.current) {
+      console.log(`${eventType}: Scrolling to top (animation active)`);
+      scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollContainerRef.current.scrollTop = 0; // Fallback
+      console.log("Scroll position set to top, scrollTop:", scrollContainerRef.current.scrollTop);
+    } else {
+      console.log(`${eventType}: Animation paused, not scrolling to top`);
+    }
+    // Stop animation regardless of scroll-to-top
+    setIsPaused(true);
+    setHasAnimation(false);
+  };
+
+  // Handle touch move to allow manual scrolling
+  const handleTouchMove = () => {
+    console.log("TouchMove: User is scrolling manually");
+    // Keep animation stopped and reset the 5-second timer
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+      console.log("Cleared resume timer due to manual scrolling");
+    }
+    setIsPaused(true);
+    setHasAnimation(false); // Ensure animation stays stopped
+    // Start a new 5-second timer
+    resumeTimerRef.current = setTimeout(() => {
+      console.log("5-second pause elapsed after manual scrolling: Resuming animation");
+      setIsPaused(false);
+      setHasAnimation(true); // Resume animation
+      resumeTimerRef.current = null;
+    }, 5000);
+    console.log("Started 5-second timer for animation resume after manual scrolling");
+  };
+
+  // Handle mouse leave/touch end to resume animation after 5 seconds
+  const handleLeave = (eventType) => {
+    console.log(`${eventType} triggered, isPaused: ${isPaused}, hasAnimation: ${hasAnimation}`);
+    // Clear any existing timer
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+      console.log("Cleared existing resume timer");
+    }
+    // Start a 5-second timer to resume animation for both TouchEnd and MouseLeave
+    resumeTimerRef.current = setTimeout(() => {
+      console.log(`5-second pause elapsed after ${eventType}: Resuming animation`);
+      setIsPaused(false);
+      setHasAnimation(true); // Resume animation
+      resumeTimerRef.current = null;
+    }, 5000);
+    console.log(`Started 5-second timer for animation resume after ${eventType}`);
+  };
 
   return (
     <div className="flex-1 p-6 bg-white rounded-xl shadow-lg" style={{ width: '280px' }}>
@@ -142,11 +240,18 @@ const ScrollableList = ({ items, title, navigateTo, accentColor }) => {
       </div>
       <div
         className="scroll-container"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+        ref={scrollContainerRef}
+        onMouseEnter={() => handleEnter("MouseEnter")}
+        onMouseLeave={() => handleLeave("MouseLeave")}
+        onTouchStart={() => handleEnter("TouchStart")}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={() => handleLeave("TouchEnd")}
         aria-live="polite"
       >
-        <div className={`scroll-content ${isPaused ? 'paused' : ''}`} style={{ animationDuration: `${animationDuration}s` }}>
+        <div
+          className={`scroll-content ${isPaused ? 'paused' : ''} ${!hasAnimation ? 'no-animation' : ''}`}
+          style={{ animationDuration: `${animationDuration}s` }}
+        >
           {[...items, ...items].map((item, index) => (
             <div
               key={index}
@@ -178,7 +283,8 @@ const Notice = () => {
         const response = await fetch("https://dept-economics-motilal.onrender.com/notice/all");
         if (!response.ok) throw new Error("Failed to fetch notices");
         const data = await response.json();
-        const lastTenNotices = data.notices.slice(-10).reverse();
+        const lastTenNotices = data.notices.slice(0, 10);
+        console.log("Fetched notices:", lastTenNotices, "Count:", lastTenNotices.length);
         setNotices(lastTenNotices);
       } catch (error) {
         console.error("Error fetching notices:", error);
@@ -195,13 +301,13 @@ const Notice = () => {
         const response = await fetch("https://dept-economics-motilal.onrender.com/upcomingEvents/all");
         if (!response.ok) throw new Error("Failed to fetch events");
         const data = await response.json();
-        const lastTenEvents = data.events.slice(-10);
+        const lastTenEvents = data.events.slice(0, 10);
+        console.log("Fetched events:", lastTenEvents, "Count:", lastTenEvents.length);
         setEvents(lastTenEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
     };
-
     fetchEvents();
   }, []);
 

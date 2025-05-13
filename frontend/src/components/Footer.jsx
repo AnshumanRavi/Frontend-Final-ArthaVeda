@@ -100,7 +100,11 @@ const Footer = () => {
             <li>
               {magazines.length > 0 ? (
                 <a
-                  href={magazines[0].magazineLink}
+                  href={
+                    magazines[0].magazineLink.startsWith('http://') || magazines[0].magazineLink.startsWith('https://')
+                      ? magazines[0].magazineLink
+                      : `https://${magazines[0].magazineLink}`
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="cursor-pointer hover:text-[#e74c3c] transition duration-300"
@@ -135,30 +139,21 @@ const Footer = () => {
                 How To Reach
               </a>
             </li>
-            <li>
-              <Link className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
-                Convocation 2023
-              </Link>
-            </li>
-            <li>
-              <Link className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
-                Senate Minutes
-              </Link>
-            </li>
-            <li>
-              <Link className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
-                SC/ST Grievance Cell
-              </Link>
-            </li>
-            <li>
-              <Link className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
-                Climate Action Plan
-              </Link>
-            </li>
-            <li>
-              <Link className="cursor-pointer hover:text-[#e74c3c] transition duration-300">
-                Anti-Sexual Harassment Policy
-              </Link>
+            {/* Arthashastra Image Below How To Reach - Tripled height and negative effect */}
+            <li className="mt-4">
+              <div className="flex justify-center md:justify-start">
+                <img
+                  src="/photos/Arthashastra.png"
+                  alt="Arthashastra Logo"
+                  className="w-32 h-24 sm:w-40 sm:h-32 md:w-48 md:h-36 object-contain filter invert"
+                  style={{ 
+                    marginTop: '0.1rem',
+                    height: 'calc(4 * 1.5rem)', // Tripling the original height
+                    width: 'auto', // Maintain aspect ratio
+                    maxWidth: '100%'
+                  }}
+                />
+              </div>
             </li>
           </ul>
         </div>

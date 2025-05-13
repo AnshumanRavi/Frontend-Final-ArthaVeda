@@ -5,7 +5,6 @@ import {
   Grid, 
   Card, 
   CardContent, 
-  Avatar, 
   useTheme,
   ThemeProvider,
   createTheme,
@@ -41,12 +40,6 @@ const defaultTheme = createTheme({
       fontSize: '1.5rem',
       '@media (max-width: 600px)': {
         fontSize: '1.2rem',
-      },
-    },
-    body2: {
-      fontSize: '0.9rem',
-      '@media (max-width: 600px)': {
-        fontSize: '0.8rem',
       },
     },
   },
@@ -118,7 +111,7 @@ const CommitteeCard = styled(Card)(({ theme }) => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  width: '100%', // Ensure card takes full width of its container
+  width: '100%',
 }));
 
 const CommitteeHeader = styled(Box, {
@@ -146,33 +139,9 @@ const CommitteeHeader = styled(Box, {
   }
 }));
 
-const MemberItem = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0.75, 0),
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  '&:last-child': {
-    borderBottom: 'none'
-  },
-  [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(0.5, 0),
-  }
-}));
-
-const CommitteeDescription = styled(Typography)(({ theme }) => ({
-  fontStyle: 'italic',
-  marginBottom: theme.spacing(1.5),
-  color: theme.palette.text.secondary,
-  fontSize: '0.8rem',
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '0.75rem',
-    marginBottom: theme.spacing(1),
-  }
-}));
-
 // Enhanced Header Component
 const PageHeader = styled(Box)(({ theme }) => ({
-  paddingTop: theme.spacing(4), // Reduced for mobile
+  paddingTop: theme.spacing(4),
   paddingBottom: theme.spacing(3),
   textAlign: 'center',
   position: 'relative',
@@ -217,134 +186,23 @@ const PageHeader = styled(Box)(({ theme }) => ({
   }
 }));
 
-// Committees Data (unchanged)
+// Committees Data
 const committeesData = [
-  {
-    name: "SOCIAL MEDIA COMMITTEE",
-    color: "#3f51b5",
-    description: "Manages all official social media channels, creates engaging content, and maintains the institution's online presence.",
-    members: [
-      "Jyoti – Social Media, Website",
-      "Tanisha – Social Media, Career Counseling",
-      "Bhumika – Social Media, Placement",
-      "Lavanya – Social Media, Academic Tour",
-      "Dimple – Social Media, Career Counseling",
-      "Khushi – Social Media, Website"
-    ]
-  },
-  {
-    name: "RECORD KEEPING COMMITTEE",
-    color: "#4caf50",
-    description: "Maintains institutional records, documentation, and archives important events and achievements.",
-    members: [
-      "Prashant Mani Awasthi – Record Keeping, Alumni",
-      "Chakradhar – Record Keeping, Alumni",
-      "Satyam – Record Keeping, Placement",
-      "Devashish – Record Keeping, Alumni",
-      "Sara – Record Keeping, Alumni",
-      "Anushka – Record Keeping, Alumni"
-    ]
-  },
-  {
-    name: "ALUMNI COMMITTEE",
-    color: "#9c27b0",
-    description: "Maintains relationships with alumni, organizes alumni events, and facilitates networking opportunities.",
-    members: [
-      "Devashish – Alumni, Record Keeping",
-      "Chakradhar – Alumni, Record",
-      "Satyam – Alumni, Placement",
-      "Sara – Alumni, Record Keeping",
-      "Anushka – Alumni, Record Keeping",
-      "Abdul Wajid Ahmad – Alumni, Academic Tour"
-    ]
-  },
-  {
-    name: "WEBSITE COMMITTEE",
-    color: "#2196f3",
-    description: "Develops and maintains the institution's website, ensuring up-to-date information and optimal user experience.",
-    members: [
-      "Riddhima – Website, Record Keeping",
-      "Prashant Raghav – Website, Academic Tour",
-      "Nishant – Website, Record Keeping",
-      "Mayank – Website, Academic Tour",
-      "Loviah Duggal – Website, Alumni",
-      "Neersj – Website, Academic"
-    ]
-  },
-  {
-    name: "PLACEMENT COMMITTEE",
-    color: "#f44336",
-    description: "Coordinates with companies, organizes placement drives, and prepares students for recruitment processes.",
-    members: [
-      "Lokesh – Placement, Social Media",
-      "Prsidhi – Placement, Alumni",
-      "Anmol – Placement, Academic Tour",
-      "Manoj – Placement, Career Counseling",
-      "Dev – Placement, Social Media",
-      "Arunansh – Placement, Website"
-    ]
-  },
-  {
-    name: "ACADEMIC COMMITTEE",
-    color: "#009688",
-    description: "Supports academic activities, organizes seminars, and facilitates student-faculty academic interactions.",
-    members: [
-      "Ashutosh – Academic, Career Counseling",
-      "Prem – Academic, Record Keeping",
-      "Kashish – Academic, Record Keeping",
-      "Aditya Raj – Academic, Record Keeping",
-      "Anubhav – Academic, Placement",
-      "Akshiv – Academic, Alumni"
-    ]
-  },
-  {
-    name: "CAREER COUNSELING COMMITTEE",
-    color: "#673ab7",
-    description: "Provides career guidance, organizes counseling sessions, and helps students with career planning.",
-    members: [
-      "Prashant Raghav – Career Counseling, Academic Tour",
-      "Tanishq – Career Counseling, Placement",
-      "Danish – Career Counseling, Academic Tour",
-      "Mayank – Career Counseling, Record Keeping",
-      "Priya – Career Counseling, Record Keeping",
-      "Sarthak – Career Counseling, Social Media"
-    ]
-  },
-  {
-    name: "ACADEMIC TOUR COMMITTEE",
-    color: "#e91e63",
-    description: "Organizes educational tours, field trips, and industry visits to enhance practical learning experiences.",
-    members: [
-      "Abdul Wajid Ahmad – Academic Tour, Alumni",
-      "Piyush – Academic Tour, Website",
-      "Aditya Thakur – Academic Tour, Alumni",
-      "Dhruv – Academic Tour, Placement",
-      "Naitik – Academic Tour, Book Keeping",
-      "Lovish – Academic Tour, Placement"
-    ]
-  },
-  {
-    name: "MAGAZINE COMMITTEE",
-    color: "#ff9800",
-    description: "Produces the institutional magazine, collects articles, and designs publications showcasing campus life.",
-    members: [
-      "Utsav Anand – Magazine, Academic Tour",
-      "Aditya Choudhary – Magazine, Academic",
-      "Srishti Bhattacharya – Magazine, Academic",
-      "Archita – Magazine, Placement",
-      "Aryan – Magazine, Website",
-      "Dev Bhatia – Magazine, Social Media",
-      "Gagan – Magazine, Academic Tour",
-      "Kanishka – Magazine, Academic",
-      "Sheriyar – Magazine, Placement",
-      "Shreeyansh – Magazine, Academic",
-      "Shruti – Magazine, Social Media",
-      "Srishti Goyal – Magazine, Placement",
-      "Suryansh – Magazine, Record Keeping",
-      "Vaishnavi – Magazine, Social Media",
-      "Saumya – Magazine, Placement"
-    ]
-  }
+  { name: "Academic Committee", color: "#009688" },
+  { name: "Academic Tour Committee", color: "#e91e63" },
+  { name: "Add-on Course Committee", color: "#ff5722" },
+  { name: "Alumni Committee", color: "#9c27b0" },
+  { name: "Course & Syllabus Committee", color: "#4caf50" },
+  { name: "Magazine Committee", color: "#ff9800" },
+  { name: "Website Committee", color: "#2196f3" },
+  { name: "Placement Committee", color: "#f44336" },
+  { name: "Social Media Committee", color: "#3f51b5" },
+  { name: "Feedback Committee", color: "#673ab7" },
+  { name: "Record Keeping Committee", color: "#795548" },
+  { name: "Career Counselling Committee", color: "#607d8b" },
+  { name: "Department Student Society Committee", color: "#cddc39" },
+  { name: "Quality Assurance Committee", color: "#8bc34a" },
+  { name: "Grievance Redressal Committee", color: "#ffeb3b" },
 ];
 
 const CommitteesComponent = () => {
@@ -355,17 +213,16 @@ const CommitteesComponent = () => {
     <Box sx={{ 
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%)',
-      pt: 7.5, // Adjusted to account for CollegeNavbar (60px on mobile)
+      pt: 7.5,
     }}>
       <Container maxWidth="lg">
         {/* Enhanced Header Section */}
         <PageHeader>
           <Typography variant="h2" component="h1">
-            Our Committees
+            Department Committees
           </Typography>
           <Typography variant="subtitle1">
-            Dedicated teams working together to make our institution better. 
-            Each committee plays a vital role in our community's success.
+            Dedicated teams driving excellence across our department's initiatives.
           </Typography>
         </PageHeader>
         
@@ -377,7 +234,7 @@ const CommitteesComponent = () => {
             display: 'grid',
             gridTemplateColumns: isMobile 
               ? '1fr' 
-              : 'repeat(auto-fill, minmax(300px, 1fr))', // Reduced min width for larger screens
+              : 'repeat(auto-fill, minmax(300px, 1fr))',
             paddingBottom: theme.spacing(isMobile ? 2 : 4),
           }}
         >
@@ -400,37 +257,7 @@ const CommitteesComponent = () => {
                     {committee.name}
                   </Typography>
                 </CommitteeHeader>
-                <CardContent sx={{ flexGrow: 1, p: isMobile ? 1.5 : 2 }}>
-                  <CommitteeDescription>
-                    {committee.description}
-                  </CommitteeDescription>
-                  {committee.members.map((member, idx) => (
-                    <MemberItem key={idx}>
-                      <Avatar 
-                        sx={{ 
-                          width: isMobile ? 28 : 32, 
-                          height: isMobile ? 28 : 32, 
-                          fontSize: isMobile ? '0.7rem' : '0.8rem',
-                          bgcolor: committee.color,
-                          mr: isMobile ? 1.5 : 2,
-                          fontWeight: 500
-                        }}
-                      >
-                        {member.charAt(0)}
-                      </Avatar>
-                      <Typography 
-                        variant="body2"
-                        sx={{
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: isMobile ? 'normal' : 'nowrap',
-                        }}
-                      >
-                        {member}
-                      </Typography>
-                    </MemberItem>
-                  ))}
-                </CardContent>
+                <CardContent sx={{ flexGrow: 1, p: isMobile ? 1.5 : 2 }} />
               </CommitteeCard>
             </Grid>
           ))}

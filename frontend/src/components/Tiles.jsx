@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Tile Button Component
@@ -89,39 +89,15 @@ const Tiles = () => {
   const leftImageRef = useRef(null);
   const rightImageRef = useRef(null);
   const navigate = useNavigate();
-  const [magazineLink, setMagazineLink] = useState("");
 
   useSlideUpAnimation(leftImageRef);
   useSlideUpAnimation(rightImageRef);
-
-  // Fetch magazine link
-  useEffect(() => {
-    const fetchMagazineLink = async () => {
-      try {
-        const res = await fetch("https://dept-economics-motilal.onrender.com/magzine/magazines");
-        const data = await res.json();
-
-        if (data.length > 0) {
-          setMagazineLink(data[0].magazineLink);
-        }
-      } catch (error) {
-        console.error("Failed to fetch magazine link:", error);
-      }
-    };
-
-    fetchMagazineLink();
-  }, []);
 
   const data = [
     { text: "FACULTY", bg: "#BA210E", image: "STUDENT.png", route: "/faculty" },
     { text: "PAST EVENTS", bg: "#F0CACA", image: "pevents.png", route: "/Past-Events" },
     { text: "COURSES", bg: "#BA210E", image: "COURSES.png", route: "/courses/course-details" },
-    {
-      text: "MAGAZINE",
-      bg: "#F0CACA",
-      image: "MAGAZINE.png",
-      href: magazineLink, // Dynamically fetched link
-    },
+    { text: "RECENT PUBLICATION", bg: "#F0CACA", image: "MAGAZINE.png", route: "/recent-publication" },
     { text: "PLACEMENT", bg: "#F0CACA", image: "RECRUITMENT.png", route: "/placement" },
     { text: "COMMITTEES", bg: "#BA210E", image: "FACULTY.png", route: "/committees" },
     { text: "ALUMNI", bg: "#F0CACA", image: "ALUMNI.png", route: "/alumni" },

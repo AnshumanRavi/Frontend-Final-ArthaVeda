@@ -73,7 +73,7 @@ const NewSite = ({ onHeightChange }) => {
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Announcement Header */}
       <div className="text-center mb-8 pb-4 border-b border-gray-200">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Welcome to The Department of Economics</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Welcome to the Department of Economics</h2>
       </div>
 
       {/* Messages Grid */}

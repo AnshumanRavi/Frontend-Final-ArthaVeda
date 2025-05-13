@@ -122,13 +122,38 @@ const CollegeNavbar = ({ onHeightChange }) => {
                 }} 
               />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', flexGrow: 1 }}>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              flexGrow: 1,
+              gap: isScrolled ? '10px' : '20px',
+              transition: 'gap 0.3s ease-in-out'
+            }}>
               <img 
-                src="/photos/Arthashastra.png" 
-                alt="Arthashastra" 
+                src="/photos/doe.png" 
+                alt="DOE Logo" 
                 style={{ 
                   height: isScrolled ? '30px' : '56px',
-                  transition: 'height 0.3s ease-in-out'
+                  transition: 'height 0.3s ease-in-out',
+                  objectFit: 'contain'
+                }} 
+              />
+              <img 
+                src="/photos/duv.png" 
+                alt="DU Verification" 
+                style={{ 
+                  height: isScrolled ? '30px' : '56px',
+                  transition: 'height 0.3s ease-in-out',
+                  objectFit: 'contain'
+                }} 
+              />
+              <img 
+                src="/photos/MNC.png" 
+                alt="MNC Logo" 
+                style={{ 
+                  height: isScrolled ? '30px' : '56px',
+                  transition: 'height 0.3s ease-in-out',
+                  objectFit: 'contain'
                 }} 
               />
             </div>
@@ -266,10 +291,13 @@ const CollegeNavbar = ({ onHeightChange }) => {
                       );
                     }
                     if (magazineData && magazineData.length > 0) {
+                      const magazineUrl = magazineData[0].magazineLink.startsWith('http://') || magazineData[0].magazineLink.startsWith('https://')
+                        ? magazineData[0].magazineLink
+                        : `https://${magazineData[0].magazineLink}`;
                       return (
                         <a
                           key={index}
-                          href={magazineData[0].magazineLink}
+                          href={magazineUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-white px-4 py-2 rounded-lg transition-all duration-300 hover:bg-black"
@@ -352,10 +380,35 @@ const CollegeNavbar = ({ onHeightChange }) => {
         <>
           <div style={mobileHeaderStyle}>
             <div style={{ display: 'flex', flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
-              <img src="/photos/Arthashastra.png" alt="Arthashastra" style={{ height: '40px' }} />
-              <img src="/photos/department2.png" alt="Department" style={{ height: '40px' }} />
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <img 
+                  src="/photos/doe.png" 
+                  alt="DOE Logo" 
+                  style={{ 
+                    height: '30px',
+                    objectFit: 'contain'
+                  }} 
+                />
+                <img 
+                  src="/photos/MNC.png" 
+                  alt="MNC Logo" 
+                  style={{ 
+                    height: '30px',
+                    objectFit: 'contain'
+                  }} 
+                />
+              </div>
+              <img 
+                src="/photos/department2.png" 
+                alt="Department" 
+                style={{ height: '40px' }} 
+              />
               <div style={{ cursor: 'pointer' }} onClick={() => setIsNavOpen(!isNavOpen)}>
-                <img src="/photos/shortnavbar.png" alt="Menu" style={{ height: '40px' }} />
+                <img 
+                  src="/photos/shortnavbar.png" 
+                  alt="Menu" 
+                  style={{ height: '40px' }} 
+                />
               </div>
             </div>
           </div>
@@ -436,7 +489,6 @@ const CollegeNavbar = ({ onHeightChange }) => {
                   Office Bearers
                 </NavLink>
               </div>
-              {/* Magazine Link - External */}
               {loading ? (
                 <span className="text-white bg-red-800 px-4 py-2 rounded-lg text-center opacity-70 cursor-not-allowed">
                   Magazine
@@ -450,7 +502,11 @@ const CollegeNavbar = ({ onHeightChange }) => {
                 </span>
               ) : magazineData && magazineData.length > 0 ? (
                 <a
-                  href={magazineData[0].magazineLink}
+                  href={
+                    magazineData[0].magazineLink.startsWith('http://') || magazineData[0].magazineLink.startsWith('https://')
+                      ? magazineData[0].magazineLink
+                      : `https://${magazineData[0].magazineLink}`
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsNavOpen(false)}

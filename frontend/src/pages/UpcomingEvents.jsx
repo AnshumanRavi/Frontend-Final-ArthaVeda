@@ -31,7 +31,7 @@ const styles = `
   }
 
   .card:hover {
-    transform: scale(1.03);
+    transform: scale blown: scale(1.03);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
     animation: none; /* Stop blinking on hover */
   }
@@ -64,12 +64,12 @@ const styles = `
     to { transform: scale(1); }
   }
 
-  /* Read More and link styles */
-  .read-more, .event-link {
+  /* Read More style */
+  .read-more {
     transition: color 0.2s ease, transform 0.2s ease, scale 0.2s ease;
   }
 
-  .read-more:hover, .event-link:hover {
+  .read-more:hover {
     color: #1e3a8a;
     transform: translateX(4px) scale(1.05);
   }
@@ -101,7 +101,7 @@ const UpcomingEvents = () => {
           throw new Error("Failed to fetch events");
         }
         const data = await response.json();
-        setEvents(data.events.reverse()); // Reverse to show latest first
+        setEvents(data.events); // Reverse to show latest first
       } catch (error) {
         console.error("Error fetching events:", error);
         setError(error.message);
@@ -233,12 +233,12 @@ const UpcomingEvents = () => {
                 <p className="text-[#4b5563] mb-4 line-clamp-3 text-sm">
                   {truncateText(event.body, 100, event)}
                 </p>
-                {event.link && (
+                {event.links && event.links.length > 0 && (
                   <a 
-                    href={event.link} 
+                    href={event.links[0].match(/^https?:\/\//) ? event.links[0] : `https://${event.links[0]}`} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="event-link inline-block mt-2 text-xs text-indigo-600 hover:text-indigo-800 font-medium"
+                    className="read-more inline-block mt-2 text-xs text-indigo-600 font-medium"
                     onClick={(e) => e.stopPropagation()}
                   >
                     Event Link →
@@ -293,19 +293,22 @@ const UpcomingEvents = () => {
                 <p className="text-[#4b5563] whitespace-pre-wrap text-base">
                   {selectedEvent.body}
                 </p>
-                {selectedEvent.link && (
+                {selectedEvent.links && selectedEvent.links.length > 0 && (
                   <div className="mt-6">
-                    <a 
-                      href={selectedEvent.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center px-4 py-2 bg-[#4f46e5] text-white rounded-lg hover:bg-[#4338ca] transition-colors"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                      </svg>
-                      Visit Event Page
-                    </a>
+                    {selectedEvent.links.map((link, index) => {
+                      const formattedLink = link.match(/^https?:\/\//) ? link : `https://${link}`;
+                      return (
+                        <a
+                          key={index}
+                          href={formattedLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="read-more text-blue-600 hover:text-blue-700 block mt-2 font-medium transition-colors"
+                        >
+                          Link {index + 1}
+                        </a>
+                      );
+                    })}
                   </div>
                 )}
               </div>

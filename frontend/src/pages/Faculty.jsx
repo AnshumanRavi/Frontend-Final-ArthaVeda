@@ -51,7 +51,7 @@ const Faculty = () => {
 
   const filteredFaculty = facultyMembers.filter(faculty => {
     if (activeTab === 'all') return true;
-    return true;
+    return true; // Placeholder for future filtering logic
   });
 
   if (loading) {
@@ -148,7 +148,7 @@ const Faculty = () => {
                       />
                     </div>
                     <h2 className="text-xl font-bold mt-4">{faculty.name}</h2>
-                    <p className="text-sm text-gray-600 mt-1">{faculty.designation || 'Professor'}</p>
+                    <p className="text-sm text-gray-600 mt-1">{faculty.designation}</p>
                     {faculty.department && (
                       <p className="text-sm font-medium text-gray-600 mt-2">Department: {faculty.department}</p>
                     )}
@@ -201,7 +201,7 @@ const Faculty = () => {
               <div className="p-6">
                 <div className="flex flex-col sm:flex-row gap-8 mb-8">
                   <div className="flex-shrink-0">
-                    <div className="and w-40 h-40 rounded-xl bg-gray-200 overflow-hidden border-4 border-white shadow-lg mx-auto sm:mx-0">
+                    <div className="w-40 h-40 rounded-xl bg-gray-200 overflow-hidden border-4 border-white shadow-lg mx-auto sm:mx-0">
                       <img
                         src={selectedFaculty.imageUrl || '/default-faculty.jpg'}
                         alt={selectedFaculty.name}
@@ -246,7 +246,7 @@ const Faculty = () => {
                     Professional Profile
                   </h4>
                   <div className="prose prose-sm max-w-none text-gray-700">
-                    {selectedFaculty.bio || 'No profile information available.'}
+                    {selectedFaculty.about || selectedFaculty.bio || 'No profile information available.'}
                   </div>
                 </div>
                 {selectedFaculty.research && (
